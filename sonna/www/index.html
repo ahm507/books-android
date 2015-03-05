@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sonna</title>
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link rel="stylesheet" href="lib/jqm/jquery.mobile-1.4.5.css">
+    <link rel="stylesheet" href="index.css"> <!-- Mine -->
+    <style id="collapsible-list-item-style">
+            /* Basic settings */
+            .ui-li-static.ui-collapsible {
+                padding: 0;
+            }
+
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview,
+            .ui-li-static.ui-collapsible > .ui-collapsible-heading {
+                margin: 0;
+            }
+
+            .ui-li-static.ui-collapsible > .ui-collapsible-content {
+                padding-top: 0;
+                padding-bottom: 0;
+                padding-right: 0;
+                border-bottom-width: 0;
+            }
+
+            /* collapse vertical borders */
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li.ui-last-child,
+            .ui-li-static.ui-collapsible.ui-collapsible-collapsed > .ui-collapsible-heading > a.ui-btn {
+                border-bottom-width: 0;
+            }
+
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li.ui-first-child,
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li.ui-first-child > a.ui-btn,
+            .ui-li-static.ui-collapsible > .ui-collapsible-heading > a.ui-btn {
+                border-top-width: 0;
+            }
+
+            /* Remove right borders */
+            .ui-li-static.ui-collapsible > .ui-collapsible-heading > a.ui-btn,
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > .ui-li-static,
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li > a.ui-btn,
+            .ui-li-static.ui-collapsible > .ui-collapsible-content {
+                border-right-width: 0;
+            }
+
+            /* Remove left borders */
+            /* Here, we need class ui-listview-outer to identify the outermost listview */
+            .ui-listview-outer > .ui-li-static.ui-collapsible .ui-li-static.ui-collapsible.ui-collapsible,
+            .ui-listview-outer > .ui-li-static.ui-collapsible > .ui-collapsible-heading > a.ui-btn,
+            .ui-li-static.ui-collapsible > .ui-collapsible-content {
+                border-left-width: 0;
+            }
+        </style>
+
+
+    <script src="lib/jq/jquery-1.11.2.js"></script>
+    <script src="lib/jqm/jquery.mobile-1.4.5.js"></script>
+
+    <script>
+/*
+        $(document).on("pagecreate", "#demo-page", function(){
+
+            //alert("Hellow");
+            $("#search-tab").click();
+
+        });
+
+    $ (function() {
+        $('#article-content').load('article.html').trigger("create");
+        $.mobile.loadPage( "about/us.html" );
+
+        });
+*/
+		// SWIPE Support for touch screens
+		$( document ).on( "pagecreate", "#demo-page", function() {
+
+			$( document ).on( "swipeleft swiperight", "#demo-page", function( e ) {
+				// We check if there is no open panel on the page because otherwise
+				// a swipe to close the left panel would also open the right panel (and v.v.).
+				// We do this by checking the data that the framework stores on the page element (panel: open).
+				if ( $( ".ui-page-active" ).jqmData( "panel" ) !== "open" ) {
+					if ( e.type === "swipeleft" ) {
+						$( "#right-panel" ).panel( "open" );
+					} else if ( e.type === "swiperight" ) {
+						$( "#left-panel" ).panel( "open" );
+					}
+				}
+			});
+		});
+
+
+    </script>
+
+    <style>
+
+        @font-face
+        {
+            font-family: "Traditional Arabic";
+            src: url(../images/trado.ttf);
+        }
+
+        .main-app-text {
+            font-family: Traditional Arabic;
+            font-size: 23pt;
+        }
+
+        .footnote-app-text {
+            font-family: Traditional Arabic;
+            font-size: 14pt;
+        }
+
+
+    </style>
+
+
+
+</head>
+<body>
+
+
+
+<div data-role="page" id="demo-page">
+
+    <!-- data-theme="c"  makes the content of body scroll into header and footer -->
+    <div data-role="header" data-theme="a" data-position="fixed">
+        <h1> السنة </h1>
+        <a href="#left-panel" data-icon="carat-r" data-iconpos="left" data-shadow="false" data-iconshadow="false"
+           class="ui-nodisc-icon">خدمات</a>
+        <a href="#right-panel" data-icon="carat-l" data-iconpos="left" data-shadow="false" data-iconshadow="false"
+           class="ui-nodisc-icon">التبويب</a>
+    </div>
+
+    <!--Main Page Content-->
+    <div role="main"  class="ui-content jqm-content">
+
+
+        <p dir="rtl" class="main-app-text">
+                         الكتاب الأول: النكاح
+                        الباب الأول: أحكام الخطبة
+                        الفرع الأول: تعريف الخطبة
+
+
+                        المادة (1):
+                        الخِطْبةُ طلبُ التزوجِ بامرأةٍ معيَّنةٍ.
+
+                        الشرح:
+                        الخِطْبَةُ -بكسر الخاء- مصدر خَطَب، يقال: خَطَب المرأةَ يَخْطُبها خِطْبةً وخَطْبا، واختطَبها: إذا طلب أن يتزوجها، فهو خاطِبٌ، وخَطّابٌ مبالغةٌ. واختطب القومُ فلانا: إذا دعوه إلى تزويج امرأة منهم. ويقال: خَطَب فلان المرأةَ إلى فلان فخطَّبه، وأَخْطَبه، أي أجابه (1).
+                        ولا يخرج معناها الاصطلاحي عن معناها اللغوي، قال في المغني: "الخطبة -بالكسر- خطبة الرجل المرأة لينكحها"(2).
+                        ونحوه قال في المطلع: "خِطْبةُ امرأةٍ -بكسر الخاء- أي طلبُ نكاحها من نفسها أو من وليها"(3).
+                        وحقيقة خطبة الرجل المرأة والإجابة والموافقة عليها من قبل المرأة أو وليها، صراحة
+
+        </p>
+            <hr>
+
+
+        <p  dir="rtl" class="footnote-app-text">
+
+                    (1) انظر: القاموس المحيط للفيروز آبادي، والمصباح المنير للفيومي، ولسان العرب لابن منظور، وتاج العروس للزبيدي، مادة " خ ط ب ".
+
+</p>                    <p  dir="rtl" class="footnote-app-text">
+
+                    (2) المغني لابن قدامة 7 / 520.
+
+        </p>                    <p  dir="rtl" class="footnote-app-text">
+
+                    (3) المطلع على أبواب المقنع لمحمد البعلي الحنبلي، ص 319.
+
+
+
+        </p>
+
+
+    </div> <!-- /content -->
+
+    <div id="left-panel" data-role="panel" data-theme="a" data-display="reveal"
+            data-position-fixed="true">
+
+
+                    <form>
+                        <div class="ui-field-contain">
+                            <select name="select-native-3" id="select-native-3" data-iconpos="left">
+                                <option value="1">كل الكتب</option>
+                                <option value="2">الكتاب الأول</option>
+                                <option value="3">الكتاب الثاني</option>
+                                <option value="4">الكتاب الثالث</option>
+                                <option value="5">الكتاب الرابع</option>
+                            </select>
+                        </div>
+                    </form>
+                    <input type="text" name="text-basic" id="text-basic" value="">
+
+                    <a href="#" class="ui-shadow ui-btn ui-corner-all">بحث</a>
+
+                    <br>
+
+                    <!-- Search Hits if any -->
+                    <table data-role="table" id="search-hits"  data-column-popup-theme="a"
+                            class="ui-body-d ui-shadow table-stripe ui-responsive" >
+                         <thead>
+                           <tr class="ui-bar-d">
+                           </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><a href="">ناتج البحث</a></td></tr>
+                            <tr><td><a href="">ناتج البحث</a></td></tr>
+                            <tr><td><a href="">ناتج البحث</a></td></tr>
+                        </tbody>
+
+                    </table>
+
+
+
+
+    </div>
+
+    <div id="right-panel" data-role="panel" data-display="reveal" data-position="right"
+         data-theme="a"  data-position-fixed="true">
+
+
+        <h2 align="center">شجرة الموضوعات</h2>
+
+
+            <div data-demo-html="true" data-demo-css="#collapsible-list-item-style">
+            <ul data-role="listview" class="ui-listview-outer">
+              <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+                <h2>عنصر رئيسي</h2>
+                <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
+                  <li><a href="#">العنصر الأول</a></li>
+                  <li><a href="#">العنصر الثاني</a></li>
+                  <li><a href="#">العنصر الثالث</a></li>
+                </ul>
+              </li>
+              <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+                <h2>عنصر رئيسي آخر</h2>
+                <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
+                  <li><a href="#">الأول</a></li>
+                  <li><a href="#">الثاني</a></li>
+
+                      <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+                        <h2>عنصر رئيسي</h2>
+                        <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
+                          <li><a href="#">عنصر فرعي</a></li>
+                          <li><a href="#">عنصر فرعي</a></li>
+                          <li><a href="#">عنصر فرعي</a></li>
+                        </ul>
+                      </li>
+
+                </ul>
+              </li>
+            </ul>
+            </div>
+
+        </div>
+
+    <div data-role="footer" data-position="fixed">
+        <h1>Thank you</h1>
+    </div>
+
+
+</div>
+<!-- /page -->
+
+</body>
+</html>

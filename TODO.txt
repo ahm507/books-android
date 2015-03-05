@@ -1,0 +1,10 @@
+
+# TODO  Build Just UI
+# TODO  Build RTL and Right aligned controls
+# TODO  index documents into sqlite
+# TODO  develop external search file
+# TODO  integrate with the sqlite
+# TODO  GUI work
+
+# FIXME download custom version of jquery-mobile with only used components
+
