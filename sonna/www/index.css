@@ -48,3 +48,17 @@ dd { font-size: 1.25em; margin: 1em 0 0; padding-bottom: 1em; border-bottom: 1px
     }
 }
 
+/* Overwrite jqm
+-----------------------------------------------------------------------------------------------------------*/
+
+textarea, body, input {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+/* CENTERED */
+.ui-button, button, .ui-btn:link {
+    direction: rtl !important;
+/*    text-align: center !important;*/
+
+}

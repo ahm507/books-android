@@ -7,4 +7,5 @@
 # TODO  GUI work
 
 # FIXME download custom version of jquery-mobile with only used components
+# FIXME add minification as a automated step to all scripts including mine
 
