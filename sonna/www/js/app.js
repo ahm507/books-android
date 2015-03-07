@@ -11,11 +11,6 @@ var search = new PageService();
         console.log("search initialized");
     });
 
-    //initialization code
-    search.display("g2b1", "2");
-//    search.display($.cookie('book_code'), $.cookie('page_id'));
-
-
     /* --------------------------------- Event Registration -------------------------------- */
 //    $('.search-key').on('keyup', findByName);
 
@@ -40,6 +35,11 @@ var search = new PageService();
     });
 
     /* ---------------------------------- Local Functions ---------------------------------- */
+
+    //initialization code
+    search.display("g2b1", "0");
+//    search.display($.cookie('book_code'), $.cookie('page_id'));
+
 
 
 
@@ -81,15 +81,16 @@ $( document ).on( "pagecreate", "#demo-page", function() {
 
 
 function doPrevious() {
-
-//    var next = page_id + 1;
-//    var prev_page = page_id - 1;
-//    if(prev_page < 0) {
-//        disable prev page
-//    }
-//
-
-    alert("PREV");
+    var page_id = $.cookie("page_id");
+    page_id--; //automatic conversion to integer
+    if(page_id < 0) {
+        //just do nothing
+        return;
+    }
+    book_code = $.cookie('book_code');
+    console.log('Next: page_id = ' + page_id + ', book_code:' + book_code);
+    page_id = page_id + ""; //convert to text as required by sqlite query
+    search.display(book_code, page_id);
 }
 
 function doNext() {
@@ -97,9 +98,6 @@ function doNext() {
     page_id++;
     book_code = $.cookie('book_code');
     console.log('Next: page_id = ' + page_id + ', book_code:' + book_code);
-
-//    var search = new PageService();
-//    search.initialize();
     page_id = page_id + "";
     search.display(book_code, page_id);
 }

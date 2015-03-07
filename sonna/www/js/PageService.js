@@ -73,7 +73,8 @@ var PageService = function () {
 
                     var len = results.rows.length;
                     if(len != 1) {
-                        alert("Invalid book or page!");
+                        //I expect an end of ids
+//                        alert("Invalid book or page!");
                         console.log('results != 1 !!! , len=' + len);
                         return;
                     }
@@ -118,14 +119,14 @@ var PageService = function () {
     var addSampleData = function (tx, employees) {
 
         var employees = [
-            {"page_id": "1", "parent_id": "1", "book_code": "g2b1", "page": "أَبَا سُفْيَانَ بْنَ حَرْبٍ أَخْبَرَهُ أَنَّ هِرَقْلَ أَرْسَلَ ", "page_fts": "قال" },
-            {"page_id": "2", "parent_id": "1", "book_code": "g2b1", "page": "البخاري", "page_fts": "البخاري" },
-            {"page_id": "3", "parent_id": "1", "book_code": "g2b1", "page": "حدثنا", "page_fts": "البخاري" },
-            {"page_id": "4", "parent_id": "2", "book_code": "g2b1", "page": "ابو هريرة", "page_fts": "كلام من غير تشكيل" },
-            {"page_id": "5", "parent_id": "3", "book_code": "g2b1", "page": " بالتشكيل عن عمر بن الخطاب", "page_fts": "كلام من غير تشكيل" },
-            {"page_id": "6", "parent_id": "3", "book_code": "g2b1", "page": "سمعت رسول", "page_fts": "الاعمال تاني" },
-            {"page_id": "7", "parent_id": "5", "book_code": "g2b1", "page": "الله يقول", "page_fts": "اي حاجه" },
-            {"page_id": "8", "parent_id": "5", "book_code": "g2b1", "page": "انما الاعمال بالنيات", "page_fts": "اما الاعمال بالنيات" }
+            {"page_id": "0", "parent_id": "-1", "book_code": "g2b1", "page": "أَبَا سُفْيَانَ بْنَ حَرْبٍ أَخْبَرَهُ أَنَّ هِرَقْلَ أَرْسَلَ ", "page_fts": "قال" },
+            {"page_id": "1", "parent_id": "0", "book_code": "g2b1", "page": "البخاري", "page_fts": "البخاري" },
+            {"page_id": "2", "parent_id": "0", "book_code": "g2b1", "page": "حدثنا", "page_fts": "البخاري" },
+            {"page_id": "3", "parent_id": "2", "book_code": "g2b1", "page": "ابو هريرة", "page_fts": "كلام من غير تشكيل" },
+            {"page_id": "4", "parent_id": "3", "book_code": "g2b1", "page": " بالتشكيل عن عمر بن الخطاب", "page_fts": "كلام من غير تشكيل" },
+            {"page_id": "5", "parent_id": "3", "book_code": "g2b1", "page": "سمعت رسول", "page_fts": "الاعمال تاني" },
+            {"page_id": "6", "parent_id": "5", "book_code": "g2b1", "page": "الله يقول", "page_fts": "اي حاجه" },
+            {"page_id": "7", "parent_id": "5", "book_code": "g2b1", "page": "انما الاعمال بالنيات", "page_fts": "اما الاعمال بالنيات" }
         ];
         var l = employees.length;
         var sql = "INSERT OR REPLACE INTO pages " +
