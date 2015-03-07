@@ -16,5 +16,11 @@
             "type": "registry",
             "id": "org.apache.cordova.dialogs"
         }
+    },
+    "com.triarc.sqlitePlugin": {
+        "source": {
+            "type": "registry",
+            "id": "com.triarc.sqliteplugin"
+        }
     }
 }

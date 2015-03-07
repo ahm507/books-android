@@ -1,11 +1,14 @@
 
-# TODO  Build Just UI
-# TODO  Build RTL and Right aligned controls
-# TODO  index documents into sqlite
-# TODO  develop external search file
-# TODO  integrate with the sqlite
-# TODO  GUI work
+# TODO Make display work: next, prev.
+# TODO integrate with the real sqlite
+# TODO TOC functionality
+# TODO search functionality
+
 
 # FIXME download custom version of jquery-mobile with only used components
 # FIXME add minification as a automated step to all scripts including mine
+
+# TODO zipping/unzipping sqlite: https://github.com/MobileChromeApps/zip
+
+
 

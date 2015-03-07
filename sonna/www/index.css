@@ -48,10 +48,31 @@ dd { font-size: 1.25em; margin: 1em 0 0; padding-bottom: 1em; border-bottom: 1px
     }
 }
 
+
+/* Some font adjustment
+-----------------------------------------------------------------------------------------------------------*/
+
+@font-face
+{
+    font-family: "Traditional Arabic";
+    src: url(./trado.ttf);
+}
+
+.main-app-text {
+    font-family: Traditional Arabic;
+    font-size: 23pt;
+}
+
+.footnote-app-text {
+    font-family: Traditional Arabic;
+    font-size: 14pt;
+}
+
+
 /* Overwrite jqm
 -----------------------------------------------------------------------------------------------------------*/
 
-textarea, body, input {
+textarea, body, input, td {
     direction: rtl !important;
     text-align: right !important;
 }
@@ -62,3 +83,6 @@ textarea, body, input {
 /*    text-align: center !important;*/
 
 }
+
+
+

@@ -20,3 +20,5 @@ cordova plugin add org.apache.cordova.console
 # Handle dialogs instead of javascript dialogs that show your app is not native
 cordova plugin add org.apache.cordova.dialogs
 
+# add existing sqlite
+cordova plugin add com.triarc.sqliteplugin

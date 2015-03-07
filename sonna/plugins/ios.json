@@ -19,6 +19,10 @@
                         {
                             "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SQLitePlugin\"><param name=\"ios-package\" value=\"SQLitePlugin\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -28,6 +32,12 @@
                     "AudioToolbox.framework": [
                         {
                             "xml": true,
+                            "count": 1
+                        }
+                    ],
+                    "libsqlite3.dylib": [
+                        {
+                            "xml": false,
                             "count": 1
                         }
                     ]
@@ -43,6 +53,9 @@
             "PACKAGE_NAME": "com.hammad.workshop"
         },
         "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "com.hammad.workshop"
+        },
+        "com.triarc.sqlitePlugin": {
             "PACKAGE_NAME": "com.hammad.workshop"
         }
     },
