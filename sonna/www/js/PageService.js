@@ -30,7 +30,7 @@ var PageService = function () {
         var deferred = $.Deferred();
         this.db.transaction(
             function (tx) {
-                var sql = "SELECT * FROM pages where page MATCH '" + queryString + "'";
+                var sql = "SELECT * FROM pages where page_fts MATCH '" + queryString + "'";
                 tx.executeSql(sql, [], function (tx, results) {
                     //Fill Hits Info
                     var len = results.rows.length,
@@ -39,25 +39,25 @@ var PageService = function () {
                         hits[i] = results.rows.item(i);
                     }
                     //Display Hits
-                    len = hits.length;
-                    i = 0;
-                    for (; i < len; i = i + 1) {
-                        console.log(hits[i].book_code + ", " + hits[i].page + ", " + hits[i].page_fts);
+//                    len = hits.length;
+//                    i = 0;
+//                    for (; i < len; i = i + 1) {
+//                        console.log(hits[i].book_code + ", " + hits[i].page + ", " + hits[i].page_fts);
+//
+//                        $('.hits-list').empty();
+//                        for (var i = 0; i < len; i++) {
+//                            e = hits[i];
+//                            $('.hits-list').append('<li><a href="#employees/' + e.id + '">' + e.page + ' ' + e.page_fts + '</a></li>');
+//                        }
+//                    }
 
-                        $('.hits-list').empty();
-                        for (var i = 0; i < len; i++) {
-                            e = hits[i];
-                            $('.hits-list').append('<li><a href="#employees/' + e.id + '">' + e.page + ' ' + e.page_fts + '</a></li>');
-                        }
-                    }
-
-//                    deferred.resolve(hits);
-//                    alert("rows returned are " + results.rows.length)
+                    deferred.resolve(hits);
+                    console.log("hits returned are " + results.rows.length)
 //                    console.log('rows returned: ' + results[0].book_code);
                 });
             },
             function (error) {
-//               deferred.reject("Transaction Error: " + error.message);
+               deferred.reject("Transaction Error: " + error.message);
                  alert(error.message);
             }
         );
@@ -80,24 +80,27 @@ var PageService = function () {
                     }
 
                     page = results.rows.item(0);
-                    console.log("displaying book_code:" + page.book_code + ", page_id: " + page.page_id);
+//                    console.log("displaying book_code:" + page.book_code + ", page_id: " + page.page_id);
+//
+//                    $.cookie("book_code", page.book_code);
+//                    $.cookie("page_id", page.page_id);
+//
+//                    $('.article-title').empty();
+//                    $('.article-title').append(page.title);
+//
+//                    $('.page').empty();
+//                    $('.page').append(page.page);
+//                    $('.page_fts').empty();
+//                    $('.page_fts').append(page.page_fts);
 
-                    $.cookie("book_code", page.book_code);
-                    $.cookie("page_id", page.page_id);
-
-                    $('.page').empty();
-                    $('.page').append(page.page);
-                    $('.page_fts').empty();
-                    $('.page_fts').append(page.page_fts);
-
-//                  deferred.resolve(hits);
+                  deferred.resolve(page);
 //                  alert("rows returned are " + results.rows.length)
 //                  console.log('rows returned: ' + results[0].book_code);
                 });
             },
             function (error) {
-//               deferred.reject("Transaction Error: " + error.message);
-                 alert(error.message);
+               deferred.reject("Display Error: " + error.message);
+               alert(error.message);
             }
         );
         return deferred.promise();
@@ -106,7 +109,7 @@ var PageService = function () {
     var createTable = function (tx) {
         tx.executeSql('DROP TABLE IF EXISTS pages');
         var sql = "CREATE VIRTUAL TABLE pages USING fts3( " +
-            "page_id, parent_id, book_code, page, page_fts);";
+            "page_id, parent_id, book_code, title, page, page_fts);";
         tx.executeSql(sql, null,
             function () {
                 console.log('Create table success');
@@ -119,23 +122,23 @@ var PageService = function () {
     var addSampleData = function (tx, employees) {
 
         var employees = [
-            {"page_id": "0", "parent_id": "-1", "book_code": "g2b1", "page": "أَبَا سُفْيَانَ بْنَ حَرْبٍ أَخْبَرَهُ أَنَّ هِرَقْلَ أَرْسَلَ ", "page_fts": "قال" },
-            {"page_id": "1", "parent_id": "0", "book_code": "g2b1", "page": "البخاري", "page_fts": "البخاري" },
-            {"page_id": "2", "parent_id": "0", "book_code": "g2b1", "page": "حدثنا", "page_fts": "البخاري" },
-            {"page_id": "3", "parent_id": "2", "book_code": "g2b1", "page": "ابو هريرة", "page_fts": "كلام من غير تشكيل" },
-            {"page_id": "4", "parent_id": "3", "book_code": "g2b1", "page": " بالتشكيل عن عمر بن الخطاب", "page_fts": "كلام من غير تشكيل" },
-            {"page_id": "5", "parent_id": "3", "book_code": "g2b1", "page": "سمعت رسول", "page_fts": "الاعمال تاني" },
-            {"page_id": "6", "parent_id": "5", "book_code": "g2b1", "page": "الله يقول", "page_fts": "اي حاجه" },
-            {"page_id": "7", "parent_id": "5", "book_code": "g2b1", "page": "انما الاعمال بالنيات", "page_fts": "اما الاعمال بالنيات" }
+            {"page_id": "0", "parent_id": "-1", "book_code": "g2b1", "title":"some title", "page": "أَبَا سُفْيَانَ بْنَ حَرْبٍ أَخْبَرَهُ أَنَّ هِرَقْلَ أَرْسَلَ ", "page_fts": "قال" },
+            {"page_id": "1", "parent_id": "0", "book_code": "g2b1", "title":"some title", "page": "البخاري", "page_fts": "البخاري" },
+            {"page_id": "2", "parent_id": "0", "book_code": "g2b1", "title":"some title", "page": "حدثنا", "page_fts": "البخاري" },
+            {"page_id": "3", "parent_id": "2", "book_code": "g2b1", "title":"some title", "page": "ابو هريرة", "page_fts": "كلام من غير تشكيل" },
+            {"page_id": "4", "parent_id": "3", "book_code": "g2b1", "title":"some title", "page": " بالتشكيل عن عمر بن الخطاب", "page_fts": "كلام من غير تشكيل" },
+            {"page_id": "5", "parent_id": "3", "book_code": "g2b1", "title":"some title", "page": "سمعت رسول", "page_fts": "الاعمال تاني" },
+            {"page_id": "6", "parent_id": "5", "book_code": "g2b1", "title":"some title", "page": "الله يقول", "page_fts": "اي حاجه" },
+            {"page_id": "7", "parent_id": "5", "book_code": "g2b1", "title":"some title", "page": "انما الاعمال بالنيات", "page_fts": "اما الاعمال بالنيات" }
         ];
         var l = employees.length;
         var sql = "INSERT OR REPLACE INTO pages " +
-            "(page_id, parent_id, book_code, page, page_fts) " +
-            "VALUES (?, ?, ?, ?, ?)";
+            "(page_id, parent_id, book_code, title, page, page_fts) " +
+            "VALUES (?, ?, ?, ?, ?, ?)";
         var e;
         for (var i = 0; i < l; i++) {
             e = employees[i];
-            tx.executeSql(sql, [e.page_id, e.parent_id, e.book_code, e.page, e.page_fts],
+            tx.executeSql(sql, [e.page_id, e.parent_id, e.book_code, e.title, e.page, e.page_fts],
                 function () {
                     console.log('INSERT success');
                 },

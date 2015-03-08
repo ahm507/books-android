@@ -12,12 +12,8 @@
     <script src="lib/jq/jquery-1.11.2.js"></script>
     <script src="lib/jqm/jquery.mobile-1.4.5.js"></script>
     <script src="lib/jquery.cookie.js"></script>
-
-
 </head>
 <body>
-
-
 
 <div data-role="page" id="demo-page">
 
@@ -45,22 +41,21 @@
           <!--</fieldset>-->
         <!--</div>-->
 
-
         <form>
             <input type="button" onclick="doPrevious()" data-icon="arrow-r" data-iconpos="notext" value="Icon only" data-inline="true">
             <input type="button" onclick="doNext()" data-icon="arrow-l" data-iconpos="notext" value="Icon only" data-inline="true">
         </form>
 
-
         <br>
 
+        <div class="article-title main-app-text"></div>
 
         <div class="page main-app-text"></div>
         <hr>
         <div class="page_fts main-app-text"></div>
 
-        <div class="doc_code" style="display: none;"></div>
-        <div class="page_id" style="display: none;"></div>
+        <!--<div class="doc_code" style="display: none;"></div>-->
+        <!--<div class="page_id" style="display: none;"></div>-->
 
 
     </div> <!-- /content -->
@@ -80,9 +75,11 @@
                             </select>
                         </div>
                     </form>
-                    <input type="text" name="text-basic" id="text-basic" value="">
+                    <input type="text" name="text-basic" id="query-string" value="">
 
-                    <a href="#" class="ui-shadow ui-btn ui-corner-all">بحث</a>
+                    <a onclick="doSearch()" class="ui-shadow ui-btn ui-corner-all">بحث</a>
+                    <!--<input type="button" value="Click Me!" onclick="doSearch()">-->
+
 
                     <br>
 
