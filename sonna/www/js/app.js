@@ -124,7 +124,6 @@ function doSearch() {
 }
 
 
-
 function doTabweeb (title, book_code, page_id, parent_id) {
 
 //    search.getParentNode(book_code, page_id, parent_id).done(function (parents) {
@@ -139,21 +138,14 @@ function doTabweeb (title, book_code, page_id, parent_id) {
 
     $('#tabweeb-tree-head').empty();
 
+    var level = 0
+    var parents = []
 
-    showParentNodePath(title, book_code, page_id, parent_id);
+    showParentNodePath(title, book_code, page_id, parent_id, level, parents);
 
         //display title
     $('#tabweeb-tree-head').append("<i><b>" + title + "</b></i><br>");
 
-
-
-//    $('#tabweeb-tree-head').empty();
-//    for(var i = parents.length-1; i >= 0;i--) {
-//        $('#tabweeb-tree-head').append(parents[i].title + "<br>");
-//    }
-//    //display title
-//    $('#tabweeb-tree-head').append("<i><b>" + page.title + "</b></i><br>");
-//
 
 ////////////////////////////////////////////////
 
@@ -164,7 +156,6 @@ function doTabweeb (title, book_code, page_id, parent_id) {
         var len = kids.length;
         for(var i = 0; i < len ; i++) {
             var hrefParameters = "('" + book_code + "', '" + kids[i].page_id + "')";
-//            var hrefParameters = "()";
             $('#tabweeb-tree-body').append("<a href=\"javascript:doDisplay" + hrefParameters +
                     "\">" + kids[i].title + "</a>");
             $('#tabweeb-tree-body').append("<br>");
@@ -173,23 +164,34 @@ function doTabweeb (title, book_code, page_id, parent_id) {
     });
 }
 
-function showParentNodePath(title, book_code, page_id, parent_id) {
+function showParentNodePath(title, book_code, page_id, parent_id, level, parents) {
 
+    level += 1;
     if(page_id.valueOf() != "0") {
 
         search.getParentNode(book_code, page_id, parent_id).done(function (parent) {
 
             if( parent != undefined ) {
-                $('#tabweeb-tree-head').append(parent.title + "<br>");
+                //prepend: append at the start
+//                var hrefParameters = "('" + book_code + "', '" + kids[i].page_id + "')";
+                $('#tabweeb-tree-head').prepend(getSpaces(level) + parent.title + "<br>");
+                parents.push(parent);
             }
 
             //Recursive call
             if(parent != undefined && parent.page_id != "0") {
-                showParentNodePath(title, book_code, parent.page_id, parent.parent_id)
+                showParentNodePath(title, book_code, parent.page_id, parent.parent_id, level, parents)
             }
 
         });
     }
 
+}
 
+function getSpaces (count) {
+    var spaces = ""
+    for(var i = 0; i < count ; i++) {
+        spaces += "&nbsp;&nbsp;&nbsp;";
+    }
+    return spaces;
 }
