@@ -60,8 +60,6 @@ function doDisplay(book_code, page_id) {
     //call display
     search.display(book_code, page_id).done(function (page) {
 
-//        console.log("displaying book_code:" + page.book_code + ", page_id: " + page.page_id);
-
         $.cookie("book_code", page.book_code);
         $.cookie("page_id", page.page_id);
 
@@ -72,6 +70,8 @@ function doDisplay(book_code, page_id) {
         $('.page').append(page.page);
         $('.page_fts').empty();
         $('.page_fts').append(page.page_fts);
+
+        doTabweeb (page.title, book_code, page_id, page.parent_id);
 
     });
 
@@ -121,9 +121,75 @@ function doSearch() {
         }
 
     });
+}
 
 
 
+function doTabweeb (title, book_code, page_id, parent_id) {
+
+//    search.getParentNode(book_code, page_id, parent_id).done(function (parents) {
+//        $('#tabweeb-tree-head').empty();
+//        console.log('Getting parent of page_id=' + page_id);
+//        for(var i = parents.length-1; i >= 0;i--) {
+//            $('#tabweeb-tree-head').append(parents[i].title + "<br>");
+//        }
+//        //display title
+//        $('#tabweeb-tree-head').append("<i><b>" + page.title + "</b></i><br>");
+//    });
+
+    $('#tabweeb-tree-head').empty();
+
+
+    showParentNodePath(title, book_code, page_id, parent_id);
+
+        //display title
+    $('#tabweeb-tree-head').append("<i><b>" + title + "</b></i><br>");
+
+
+
+//    $('#tabweeb-tree-head').empty();
+//    for(var i = parents.length-1; i >= 0;i--) {
+//        $('#tabweeb-tree-head').append(parents[i].title + "<br>");
+//    }
+//    //display title
+//    $('#tabweeb-tree-head').append("<i><b>" + page.title + "</b></i><br>");
+//
+
+////////////////////////////////////////////////
+
+
+    search.getKidsNodes(book_code, page_id, parent_id).done(function (kids) {
+        $('#tabweeb-tree-body').empty();
+
+        var len = kids.length;
+        for(var i = 0; i < len ; i++) {
+            var hrefParameters = "('" + book_code + "', '" + kids[i].page_id + "')";
+//            var hrefParameters = "()";
+            $('#tabweeb-tree-body').append("<a href=\"javascript:doDisplay" + hrefParameters +
+                    "\">" + kids[i].title + "</a>");
+            $('#tabweeb-tree-body').append("<br>");
+        }
+
+    });
+}
+
+function showParentNodePath(title, book_code, page_id, parent_id) {
+
+    if(page_id.valueOf() != "0") {
+
+        search.getParentNode(book_code, page_id, parent_id).done(function (parent) {
+
+            if( parent != undefined ) {
+                $('#tabweeb-tree-head').append(parent.title + "<br>");
+            }
+
+            //Recursive call
+            if(parent != undefined && parent.page_id != "0") {
+                showParentNodePath(title, book_code, parent.page_id, parent.parent_id)
+            }
+
+        });
+    }
 
 
 }
