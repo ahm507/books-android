@@ -22,3 +22,7 @@ cordova plugin add org.apache.cordova.dialogs
 
 # add existing sqlite
 cordova plugin add com.triarc.sqliteplugin
+
+# plugin to copy the sqlite db file
+cordova plugin add https://github.com/an-rahulpandey/cordova-plugin-dbcopy.git
+

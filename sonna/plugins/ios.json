@@ -23,6 +23,10 @@
                         {
                             "xml": "<feature name=\"SQLitePlugin\"><param name=\"ios-package\" value=\"SQLitePlugin\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"sqlDB\"><param name=\"ios-package\" value=\"sqlDB\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -56,6 +60,9 @@
             "PACKAGE_NAME": "com.hammad.workshop"
         },
         "com.triarc.sqlitePlugin": {
+            "PACKAGE_NAME": "com.hammad.workshop"
+        },
+        "me.rahul.plugins.sqlDB": {
             "PACKAGE_NAME": "com.hammad.workshop"
         }
     },

@@ -22,5 +22,12 @@
             "type": "registry",
             "id": "com.triarc.sqliteplugin"
         }
+    },
+    "me.rahul.plugins.sqlDB": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/an-rahulpandey/cordova-plugin-dbcopy.git",
+            "subdir": "."
+        }
     }
 }

@@ -1,36 +1,19 @@
 // We use an "Immediate Function" to initialize the application to
 // avoid leaving anything behind in the global scope
 
-
 var search = new PageService();
+
 
 (function () {
 
     /* ---------------------------------- Local Variables ---------------------------------- */
-    search.initialize().done(function () {
-        console.log("search initialized");
-    });
+
 
     /* --------------------------------- Event Registration -------------------------------- */
-    // override the window.alert() function and replace its default implementation
-    document.addEventListener('deviceready', function () {
-      if (navigator.notification) { // Override default HTML alert with native dialog
-          window.alert = function (message) {
-              navigator.notification.alert(
-                  message,    // message
-                  null,       // callback
-                  "Sonna",    // title
-                  'OK'        // buttonName
-              );
-          };
-      }
-      alert("on devide ready: ok");
 
-    }, false);
-    $('.help-btn').on('click', function() {
-        alert("Search application v1.0");
-    });
+    document.addEventListener('deviceready', onDeviceReady, false);
 
+    //FIXME MOVE to onDeviceReady
     // SWIPE Support for touch screens
     $( document ).on( "pagecreate", "#demo-page", function() {
         $( document ).on( "swipeleft swiperight", "#demo-page", function( e ) {
@@ -49,19 +32,46 @@ var search = new PageService();
 
     /* ---------------------------------- Local Functions ---------------------------------- */
 
-    //initialization code
-    doDisplay("g2b1", "0");
-//    search.display($.cookie('book_code'), $.cookie('page_id'));
+    function onDeviceReady() {
+
+        console.log(">device is ready");
+
+        console.log(">Override alert to use native interface");
+
+        //override the window.alert() function and replace its default implementation
+        if (navigator.notification) { // Override default HTML alert with native dialog
+              window.alert = function (message) {
+                  navigator.notification.alert(
+                      message,    // message
+                      null,       // callback
+                      "Sonna",    // title
+                      'OK'        // buttonName
+                  );
+              };
+          }
+
+        console.log(">initialize search database");
+        search.initialize();
+
+//        console.log(">initial doDisplay  is going to be called");
+//        doDisplay("g2b1", "0");
+
+    }
+
+
+
 
 }());
+
 
 
 function doDisplay(book_code, page_id) {
     //call display
     search.display(book_code, page_id).done(function (page) {
-
-        $.cookie("book_code", page.book_code);
-        $.cookie("page_id", page.page_id);
+//        $.cookie("book_code", page.book_code);
+//        $.cookie("page_id", page.page_id);
+        window.localStorage.setItem("book_code", page.book_code);
+        window.localStorage.setItem("page_id", page.page_id);
 
         $('.article-title').empty();
         $('.article-title').append(page.title);
@@ -78,22 +88,30 @@ function doDisplay(book_code, page_id) {
 }
 
 function doPrevious() {
-    var page_id = $.cookie("page_id");
+//    var page_id = $.cookie("page_id");
+    var page_id = window.localStorage.getItem("page_id");
+
     page_id--; //automatic conversion to integer
     if(page_id < 0) {
         //just do nothing
         return;
     }
-    book_code = $.cookie('book_code');
-    console.log('Next: page_id = ' + page_id + ', book_code:' + book_code);
+//    book_code = $.cookie('book_code');
+    var book_code = window.localStorage.getItem("book_code");
+
+    console.log('Previous: page_id = ' + page_id + ', book_code:' + book_code);
     page_id = page_id + ""; //convert to text as required by sqlite query
     doDisplay(book_code, page_id);
 }
 
 function doNext() {
-    var page_id = $.cookie("page_id");
+//    var page_id = $.cookie("page_id");
+    var page_id = window.localStorage.getItem("page_id");
+
     page_id++;
-    book_code = $.cookie('book_code');
+//    book_code = $.cookie('book_code');
+    var book_code = window.localStorage.getItem("book_code");
+
     console.log('Next: page_id = ' + page_id + ', book_code:' + book_code);
     page_id = page_id + "";
     doDisplay(book_code, page_id);
@@ -195,3 +213,5 @@ function getSpaces (count) {
     }
     return spaces;
 }
+
+

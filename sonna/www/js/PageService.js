@@ -5,26 +5,120 @@ var PageService = function () {
 
     this.initialize = function () {
         var deferred = $.Deferred();
-//      this.db = window.sqlitePlugin.openDatabase({name:"sqlite.db"});
 //      See https://github.com/brodysoft/Cordova-SQLitePlugin
-        this.db = window.openDatabase("sqlite", "1.0", "Employee Demo DB", 200000);
-        this.db.transaction(
-            function (tx) {
-                createTable(tx);
-                addSampleData(tx);
-            },
-            function (error) {
-                console.log('Transaction error: ' + error);
-                deferred.reject('Transaction error: ' + error);
-            },
-            function () {
-                console.log('DB init success');
-                deferred.resolve();
-            }
-        );
+//FIXME make a programatic switch between browser mode and emulator/device mode
+        //sqlitePlugin runs only in Emulator or real device
+        console.log(">Copying sonna.sqlite to native device location");
+//        window.plugins.sqlDB.copy("sonna.sqlite", copySuccess, copyError);
+
+        //it is important to remove any old pending file
+        window.plugins.sqlDB.remove("sonna.sqlite", removeSuccess, removeError);
+        window.plugins.sqlDB.copy("sonna.sqlite", this.copySuccess, copyError);
+//        this.db = window.openDatabase("sqlite", "1.0", "sqlite", 20000000);
+//        this.db.transaction(
+//            function (tx) {
+//                createTable(tx);
+//                addSampleData(tx);
+//            },
+//            function (error) {
+//                console.log('Transaction error: ' + error);
+//                deferred.reject('Transaction error: ' + error);
+//            },
+//            function () {
+//                console.log('DB init success');
+//                deferred.resolve();
+//            }
+//        );
 
         return deferred.promise();
     }
+
+//    function copySuccess() {
+    this.copySuccess = function() {
+        console.log(">Success in copying sonna.sqlite");
+        //sqlitePlugin: "createFromLocation: 1" NEVER WORKS WITH ME
+        this.db = window.sqlitePlugin.openDatabase({name:"sonna.sqlite"});
+
+//        doDisplay("g2b1", "0");
+
+            var page_id = "0";
+
+            this.db.transaction(
+                function (tx) {
+                    var sql = "SELECT * FROM pages where page_id MATCH ?";
+                    tx.executeSql(sql, [page_id], function (tx, results) {
+                        var len = results.rows.length;
+                        if(len != 1) {
+                            //I expect an end of ids
+                            console.log('>results != 1 !!! , len=' + len);
+                            return;
+                        }
+
+                        page = results.rows.item(0);
+                        console.log(">Displaying initial page");
+//                      $.cookie("book_code", page.book_code);
+//                      $.cookie("page_id", page.page_id);
+                        //cookies are not supported
+                        window.localStorage.setItem("book_code", page.book_code);
+                        window.localStorage.setItem("page_id", page.page_id);
+
+                        $('.article-title').empty();
+                        $('.article-title').append(page.title);
+
+                        $('.page').empty();
+                        $('.page').append(page.page);
+                        $('.page_fts').empty();
+                        $('.page_fts').append(page.page_fts);
+
+//                        deferred.resolve(page);
+    //                  alert("rows returned are " + results.rows.length)
+    //                  console.log('rows returned: ' + results[0].book_code);
+                    });
+                },
+                function (error) {
+//                   deferred.reject("Display Error: " + error.message);
+                   console.log(">Error: " + error.message);
+                }
+            );
+
+//
+////        this.display("g2b1", "0").done(function (page) {
+//
+//            $.cookie("book_code", page.book_code);
+//            $.cookie("page_id", page.page_id);
+//
+//            $('.article-title').empty();
+//            $('.article-title').append(page.title);
+//
+//            $('.page').empty();
+//            $('.page').append(page.page);
+//            $('.page_fts').empty();
+//            $('.page_fts').append(page.page_fts);
+
+
+
+//            doTabweeb (page.title, book_code, page_id, page.parent_id);
+
+//        });
+
+
+    }
+
+
+    function copyError() {
+        console.log(">Failed to copy sonna.sqlite!!!");
+    }
+
+
+
+    function removeSuccess() {
+        console.log(">SUCCESS, removed sonna.sqlite!!!");
+    }
+
+    function removeError() {
+        console.log(">ERROR, unable to remove sonna.sqlite!!!");
+    }
+
 
     var createTable = function (tx) {
         tx.executeSql('DROP TABLE IF EXISTS pages');
@@ -85,12 +179,11 @@ var PageService = function () {
 
                     deferred.resolve(hits);
                     console.log("hits returned are " + results.rows.length)
-//                    console.log('rows returned: ' + results[0].book_code);
                 });
             },
             function (error) {
-               deferred.reject("Transaction Error: " + error.message);
-                 alert(error.message);
+                console.log('>ERROR: ' + error.message);
+                deferred.reject("Transaction Error: " + error.message);
             }
         );
         return deferred.promise();
@@ -98,16 +191,17 @@ var PageService = function () {
 
     this.display = function (book_code, page_id) {
         var deferred = $.Deferred();
+
+        this.db = window.sqlitePlugin.openDatabase({name:"sonna.sqlite"});
+
         this.db.transaction(
             function (tx) {
                 var sql = "SELECT * FROM pages where page_id MATCH ?";
                 tx.executeSql(sql, [page_id], function (tx, results) {
-
                     var len = results.rows.length;
                     if(len != 1) {
                         //I expect an end of ids
-//                        alert("Invalid book or page!");
-                        console.log('results != 1 !!! , len=' + len);
+                        console.log('>results != 1 !!! , len=' + len);
                         return;
                     }
 
@@ -119,7 +213,7 @@ var PageService = function () {
             },
             function (error) {
                deferred.reject("Display Error: " + error.message);
-               alert(error.message);
+               console.log(">Error: " + error.message);
             }
         );
         return deferred.promise();
@@ -149,7 +243,7 @@ var PageService = function () {
             },
             function (error) {
                deferred.reject("Display Error: " + error.message);
-               alert(error.message);
+               console.log(">Error: " + error.message);
             }
         );
         return deferred.promise();
@@ -178,7 +272,7 @@ var PageService = function () {
             },
             function (error) {
                deferred.reject("Display Error: " + error.message);
-               alert(error.message);
+               console.log("Error: " + error.message);
             }
         );
         return deferred.promise();
