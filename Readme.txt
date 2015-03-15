@@ -1,6 +1,29 @@
 
-https://developer.chrome.com/devtools/docs/remote-debugging
+
+RESUME WORK NOTES
 
 
-Important
-https://github.com/jgilfelt/android-sqlite-asset-helper
+Ignore object oriented ugly code
+Use the style of spike code
+
+Search services is just a javascript file, not an object at all
+
+TOC is broken
+
+Duplicate code exist in Display and initialization
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

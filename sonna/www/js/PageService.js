@@ -13,7 +13,7 @@ var PageService = function () {
 
         //it is important to remove any old pending file
         window.plugins.sqlDB.remove("sonna.sqlite", removeSuccess, removeError);
-        window.plugins.sqlDB.copy("sonna.sqlite", this.copySuccess, copyError);
+//        window.plugins.sqlDB.copy("sonna.sqlite", this.copySuccess, copyError);
 //        this.db = window.openDatabase("sqlite", "1.0", "sqlite", 20000000);
 //        this.db.transaction(
 //            function (tx) {
@@ -33,9 +33,10 @@ var PageService = function () {
         return deferred.promise();
     }
 
-//    function copySuccess() {
-    this.copySuccess = function() {
+    function copySuccess() {
+//    this.copySuccess = function() {
         console.log(">Success in copying sonna.sqlite");
+        alert(">Success in copying sonna.sqlite");
         //sqlitePlugin: "createFromLocation: 1" NEVER WORKS WITH ME
         this.db = window.sqlitePlugin.openDatabase({name:"sonna.sqlite"});
 
@@ -107,16 +108,25 @@ var PageService = function () {
 
     function copyError() {
         console.log(">Failed to copy sonna.sqlite!!!");
+        alert(">Failed to copy sonna.sqlite!!!");
     }
 
 
 
     function removeSuccess() {
         console.log(">SUCCESS, removed sonna.sqlite!!!");
+        alert(">SUCCESS, removed sonna.sqlite!!!");
+
+        window.plugins.sqlDB.copy("sonna.sqlite", this.copySuccess, copyError);
+
     }
 
     function removeError() {
         console.log(">ERROR, unable to remove sonna.sqlite!!!");
+        alert(">ERROR, unable to remove sonna.sqlite!!!");
+
+        window.plugins.sqlDB.copy("sonna.sqlite", this.copySuccess, copyError);
+
     }
 
 
