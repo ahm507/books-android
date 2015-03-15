@@ -2,6 +2,4 @@
 
 #cordova emulate ios
 
-cd sonna
 cordova emulate android
-cd ..

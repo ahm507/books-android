@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-#install node.js
-
+install node.js manually
 
 sudo npm install -g cordova
 
@@ -11,12 +10,8 @@ sudo npm install -g cordova
 
 # make sure ANT is installed
 
+# if required, install java - for ANT and Android SDK
+
 # ios simulator bindings
 sudo npm install -g ios-sim
 
-#install node server
-#npm install  # ERROR
-
-
-# Install console write plugin
-#cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-console.git
