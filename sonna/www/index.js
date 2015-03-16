@@ -1,7 +1,7 @@
 // We use an "Immediate Function" to initialize the application to
 // avoid leaving anything behind in the global scope
 
-var search = new PageService();
+//var search = new PageService();
 
 ////Module pattern
 //(function () {
@@ -48,7 +48,7 @@ var search = new PageService();
           }
 
         console.log(">initialize search database");
-        search.initialize();
+        initializeDB();
 
 //      console.log(">initial doDisplay  is going to be called");
 
@@ -85,7 +85,7 @@ var search = new PageService();
 
 function doDisplay(book_code, page_id) {
     //call display
-    search.display(book_code, page_id).done(function (result) {
+    display(book_code, page_id).done(function (result) {
 //        $.cookie("book_code", page.book_code);
 //        $.cookie("page_id", page.page_id);
         window.localStorage.setItem("book_code", result.book_code);
@@ -98,7 +98,7 @@ function doDisplay(book_code, page_id) {
         var parts = result.page.split("##");
 
         $('#article-body').append(parts[0]);
-        if(parts.length() > 1) {
+        if(parts.length > 1) {
             $('#article-body').append("<hr>" + parts[1]);
         }
 
@@ -168,7 +168,7 @@ function doSearch() {
 
 function doTabweeb (title, book_code, page_id, parent_id) {
 
-//    search.getParentNode(book_code, page_id, parent_id).done(function (parents) {
+//    getParentNode(book_code, page_id, parent_id).done(function (parents) {
 //        $('#tabweeb-tree-head').empty();
 //        console.log('Getting parent of page_id=' + page_id);
 //        for(var i = parents.length-1; i >= 0;i--) {
@@ -192,7 +192,7 @@ function doTabweeb (title, book_code, page_id, parent_id) {
 ////////////////////////////////////////////////
 
 
-    search.getKidsNodes(book_code, page_id, parent_id).done(function (kids) {
+    getKidsNodes(book_code, page_id, parent_id).done(function (kids) {
         $('#tabweeb-tree-body').empty();
 
         var len = kids.length;
@@ -211,7 +211,7 @@ function showParentNodePath(title, book_code, page_id, parent_id, level, parents
     level += 1;
     if(page_id.valueOf() != "0") {
 
-        search.getParentNode(book_code, page_id, parent_id).done(function (parent) {
+        getParentNode(book_code, page_id, parent_id).done(function (parent) {
 
             if( parent != undefined ) {
                 //prepend: append at the start
