@@ -84,5 +84,11 @@ textarea, body, input, td {
 
 }
 
+.scollable-table {
+    max-height:300px;
+    display: block;
+	overflow: auto;
+	width: 100%
 
+}
 
