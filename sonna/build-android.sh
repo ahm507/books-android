@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-cordova build android
+# rm www/cordova.js
 
+
+cordova build android

@@ -3,15 +3,58 @@
 
 var search = new PageService();
 
-
-(function () {
+////Module pattern
+//(function () {
 
     /* ---------------------------------- Local Variables ---------------------------------- */
 
 
     /* --------------------------------- Event Registration -------------------------------- */
 
-    document.addEventListener('deviceready', onDeviceReady, false);
+
+    if(typeof mac_browser_test === 'undefined') {
+
+        document.addEventListener('deviceready', onDeviceReady, false);
+    } else {
+        initialize();
+    }
+
+
+
+  function onDeviceReady() {
+
+    initialize();
+
+    }
+
+
+    function initialize() {
+
+
+          console.log(">device is ready");
+
+        console.log(">Override alert to use native interface");
+
+        //override the window.alert() function and replace its default implementation
+        if (navigator.notification) { // Override default HTML alert with native dialog
+              window.alert = function (message) {
+                  navigator.notification.alert(
+                      message,    // message
+                      null,       // callback
+                      "Sonna",    // title
+                      'OK'        // buttonName
+                  );
+              };
+          }
+
+        console.log(">initialize search database");
+        search.initialize();
+
+//      console.log(">initial doDisplay  is going to be called");
+
+    }
+
+
 
     //FIXME MOVE to onDeviceReady
     // SWIPE Support for touch screens
@@ -32,54 +75,35 @@ var search = new PageService();
 
     /* ---------------------------------- Local Functions ---------------------------------- */
 
-    function onDeviceReady() {
-
-        console.log(">device is ready");
-
-        console.log(">Override alert to use native interface");
-
-        //override the window.alert() function and replace its default implementation
-        if (navigator.notification) { // Override default HTML alert with native dialog
-              window.alert = function (message) {
-                  navigator.notification.alert(
-                      message,    // message
-                      null,       // callback
-                      "Sonna",    // title
-                      'OK'        // buttonName
-                  );
-              };
-          }
-
-        console.log(">initialize search database");
-        search.initialize();
-
-//        console.log(">initial doDisplay  is going to be called");
-//        doDisplay("g2b1", "0");
-
-    }
 
 
 
-
-}());
+//
+//}());
 
 
 
 function doDisplay(book_code, page_id) {
     //call display
-    search.display(book_code, page_id).done(function (page) {
+    search.display(book_code, page_id).done(function (result) {
 //        $.cookie("book_code", page.book_code);
 //        $.cookie("page_id", page.page_id);
-        window.localStorage.setItem("book_code", page.book_code);
-        window.localStorage.setItem("page_id", page.page_id);
+        window.localStorage.setItem("book_code", result.book_code);
+        window.localStorage.setItem("page_id", result.page_id);
 
-        $('.article-title').empty();
-        $('.article-title').append(page.title);
+        $('#article-title').empty();
+        $('#article-title').append(result.title);
 
-        $('.page').empty();
-        $('.page').append(page.page);
-        $('.page_fts').empty();
-        $('.page_fts').append(page.page_fts);
+        $('#article-body').empty();
+        var parts = result.page.split("##");
+
+        $('#article-body').append(parts[0]);
+        if(parts.length() > 1) {
+            $('#article-body').append("<hr>" + parts[1]);
+        }
+
+//        $('.page_fts').empty();
+//        $('.page_fts').append(page.page_fts);
 
         doTabweeb (page.title, book_code, page_id, page.parent_id);
 
@@ -215,3 +239,23 @@ function getSpaces (count) {
 }
 
 
+//
+//http://www.javascriptkit.com/javatutors/loadjavascriptcss.shtml
+//
+//function loadjscssfile(filename, filetype){
+//    if (filetype=="js"){ //if filename is a external JavaScript file
+//        var fileref=document.createElement('script')
+//        fileref.setAttribute("type","text/javascript")
+//        fileref.setAttribute("src", filename)
+//    }
+//    else if (filetype=="css"){ //if filename is an external CSS file
+//        var fileref=document.createElement("link")
+//        fileref.setAttribute("rel", "stylesheet")
+//        fileref.setAttribute("type", "text/css")
+//        fileref.setAttribute("href", filename)
+//    }
+//    if (typeof fileref!="undefined")
+//        document.getElementsByTagName("head")[0].appendChild(fileref)
+//}
+//
+//loadjscssfile("myscript.js", "js") //dynamically load and add this .js file

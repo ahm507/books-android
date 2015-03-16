@@ -1,4 +1,5 @@
 // BACK END SERVICES ONLY, NO UI HERE
+
 var PageService = function () {
 
 //FIXME onDeviceReady issue
@@ -8,12 +9,44 @@ var PageService = function () {
 //      See https://github.com/brodysoft/Cordova-SQLitePlugin
 //FIXME make a programatic switch between browser mode and emulator/device mode
         //sqlitePlugin runs only in Emulator or real device
-//        console.log(">Trying to Copying sonna.sqlite to native device location");
-//        window.plugins.sqlDB.copy("sonna.sqlite", copySuccess, copyError);
+
+//if (screen.width <= 699) {
+//    document.location = "/mobile/index.html";
+//} else {
+//    document.location = "/desktop/index.html";
+//}
+        //Show Hour glass
+        $.mobile.loading( "show", {
+          text: "",
+          textVisible: false,
+          theme: "z",
+          html: ""
+        });
+
+        console.log(">navigator= " + navigator.userAgent);
+
+        //>navigator= Mozilla/5.0 (Linux; Android 5.0.1; Android SDK built for x86 Build/LSX66B) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/37.0.0.0 Mobile Safari/537.36
+
+
+        //>navigator= Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X; en-us) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53
 
         //it is important to remove any old pending file
-        window.plugins.sqlDB.remove("sonna.sqlite", removeSuccess, removeError);
-        window.plugins.sqlDB.copy("sonna.sqlite", this.copySuccess, copyError);
+        //FIXME only copy on installation, first time, not with each run
+
+        //Mobile Device
+        if(typeof mac_browser_test === 'undefined'){
+            console.log("mac_browser_test is undefined ");
+        }
+        else {
+            console.log("mac_browser_test = ", mac_browser_test);
+        }
+
+        if(typeof mac_browser_test === 'undefined'){
+            window.plugins.sqlDB.remove("sonna.sqlite", removeSuccess, removeError);
+            window.plugins.sqlDB.copy("sonna.sqlite", this.copySuccess, copyError);
+        } else {
+            this.OpenMyDatabase();
+        }
 
 //        window.plugins.sqlDB.copy("sonna.sqlite", this.copySuccess, copyError);
 //        this.db = window.openDatabase("sqlite", "1.0", "sqlite", 20000000);
@@ -37,23 +70,53 @@ var PageService = function () {
 
     function removeSuccess() {
         console.log(">SUCCESS, removed sonna.sqlite!!!");
-        alert(">SUCCESS, removed sonna.sqlite!!!");
+//        alert(">SUCCESS, removed sonna.sqlite!!!");
     }
 
     function removeError() {
         console.log(">ERROR, unable to remove sonna.sqlite!!!");
-        alert(">ERROR, unable to remove sonna.sqlite!!!");
+//        alert(">ERROR, unable to remove sonna.sqlite!!!");
 
 
     }
 
 
+    this.OpenMyDatabase = function() {
+                //if not the debugger of my MAC
+        if(typeof mac_browser_test === 'undefined'){
+            //sqlitePlugin: "createFromLocation: 1" NEVER WORKS WITH ME
+            this.db = window.sqlitePlugin.openDatabase({name:"sonna.sqlite"});
+
+        } else { //My Debugger
+
+            this.db = window.openDatabase("sqlite", "1.0", "sqlite", 20000000);
+            this.db.transaction(
+                function (tx) {
+                    createTable(tx);
+                    addSampleData(tx);
+                },
+                function (error) {
+                    console.log('Transaction error: ' + error);
+                    deferred.reject('Transaction error: ' + error);
+                },
+                function () {
+                    console.log('DB init success');
+                    //deferred.resolve();
+                }
+            );
+
+
+        }
+
+
+    }
+
 //    function copySuccess() {
     this.copySuccess = function() {
         console.log(">Success in copying sonna.sqlite");
-        alert(">Success in copying sonna.sqlite");
-        //sqlitePlugin: "createFromLocation: 1" NEVER WORKS WITH ME
-        this.db = window.sqlitePlugin.openDatabase({name:"sonna.sqlite"});
+//        alert(">Success in copying sonna.sqlite");
+
+        this.OpenMyDatabase();
 
 //        doDisplay("g2b1", "0");
 
@@ -72,19 +135,39 @@ var PageService = function () {
 
                         page = results.rows.item(0);
                         console.log(">Displaying initial page");
+
+//                        doDisplay(book_code, page_id);
+
 //                      $.cookie("book_code", page.book_code);
 //                      $.cookie("page_id", page.page_id);
                         //cookies are not supported
                         window.localStorage.setItem("book_code", page.book_code);
                         window.localStorage.setItem("page_id", page.page_id);
 
-                        $('.article-title').empty();
-                        $('.article-title').append(page.title);
+                        $('#article-title').empty();
+                        $('#article-title').append(page.title);
 
-                        $('.page').empty();
-                        $('.page').append(page.page);
-                        $('.page_fts').empty();
-                        $('.page_fts').append(page.page_fts);
+                        $('article-body').empty();
+
+                        var parts = page.page.split("##");
+
+                        $('#article-body').append(parts[0]);
+                        if(parts.length > 1) {
+                            $('#article-body').append("<hr>" + parts[1]);
+                        }
+
+                        //Hide Hour glass
+                        $.mobile.loading( "hide", {
+                              text: "",
+                              textVisible: false,
+                              theme: "z",
+                              html: ""
+                            });
+
+
+//                        $('article-body').append(page.page);
+//                        $('.page_fts').empty();
+//                        $('.page_fts').append(page.page_fts);
 
 //                        deferred.resolve(page);
     //                  alert("rows returned are " + results.rows.length)
@@ -123,7 +206,7 @@ var PageService = function () {
 
     function copyError() {
         console.log(">Failed to copy sonna.sqlite!!!");
-        alert(">Failed to copy sonna.sqlite!!!");
+//        alert(">Failed to copy sonna.sqlite!!!");
     }
 
 
@@ -199,7 +282,16 @@ var PageService = function () {
     this.display = function (book_code, page_id) {
         var deferred = $.Deferred();
 
-        this.db = window.sqlitePlugin.openDatabase({name:"sonna.sqlite"});
+
+        //if(typeof mac_browser_test === 'undefined') {
+        //    this.db = window.sqlitePlugin.openDatabase({name: "sonna.sqlite"});
+        //}else {
+        //
+        //
+        //}
+
+        //Duplicate open just to check
+        this.OpenMyDatabase();
 
         this.db.transaction(
             function (tx) {

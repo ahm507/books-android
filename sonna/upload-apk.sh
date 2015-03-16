@@ -5,6 +5,7 @@ echo "hardsecure202"
 
 cp ./platforms/android/ant-build/MainActivity-debug.apk ./sonna.0.2.apk
 rsync -avzhe ssh  ./sonna.0.2.apk root@188.166.21.10:/var/www/FamilyWeb/src/remove/
+rm ./sonna.0.2.apk
 
 
 
