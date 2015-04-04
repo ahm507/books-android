@@ -28,10 +28,10 @@ function initializeDB() {
         //window.localStorage.setItem("db_file_copied", "true");
 
 
-    } else { //Browser debug
+    } else { //MAC Browser dev mode
         console.log("mac_browser_test = ", mac_browser_test);
         OpenMyDatabase(); //oncopy event will not work
-        doDisplay("g2b1", 0);
+        doDisplay("", 0);
     }
 
     return deferred.promise();
@@ -89,7 +89,7 @@ function copySuccess() {
                 html: ""
             });
 
-            doDisplay("g2b1", 0);
+            doDisplay("", 0);
 
 
         },
@@ -126,15 +126,15 @@ function addSampleData(tx) {
             "parent_id": "NO_PARENT",
             "book_code": "g2b1",
             "title": "البخاري",
-            "page": "11      أَنَّ هِرَقْلَ أَرْسَلَ ",
-            "page_fts": "11 قال"
+            "page": "البخاري",
+            "page_fts": "11 البخاري"
         },
         {
             "page_id": "1",
             "parent_id": "0",
             "book_code": "g2b1",
             "title": "الثاني",
-            "page": "البخاري",
+            "page": "body text ## meanings\n word:meanining \n word2:meaning2\n word3: meaning3",
             "page_fts": "11 البخاري"
         },
         {
@@ -183,21 +183,21 @@ function addSampleData(tx) {
             "book_code": "g2b1",
             "title": "Eight",
             "page": "انما الاعمال بالنيات",
-            "page_fts": "11 اما الاعمال بالنيات"
+            "page_fts": "11 7 الاعمال بالنيات"
         },
         {
             "page_id": "8",
             "parent_id": "5",
             "book_code": "g2b1",
-            "title": "More",
-            "page": "انما الاعمال بالنيات",
-            "page_fts": "11 اما الاعمال بالنيات"
+            "title": "More 8",
+            "page": "انما 8 بالنيات",
+            "page_fts": "11 8 الاعمال بالنيات"
         },
         {
             "page_id": "9",
             "parent_id": "5",
             "book_code": "g2b1",
-            "title": "More",
+            "title": "More 9",
             "page": "انما الاعمال بالنيات",
             "page_fts": "11 اما الاعمال بالنيات"
         },
@@ -205,7 +205,7 @@ function addSampleData(tx) {
             "page_id": "10",
             "parent_id": "5",
             "book_code": "g2b1",
-            "title": "More",
+            "title": "More 10",
             "page": "انما الاعمال بالنيات",
             "page_fts": "11 اما الاعمال بالنيات"
         },
@@ -213,7 +213,7 @@ function addSampleData(tx) {
             "page_id": "11",
             "parent_id": "5",
             "book_code": "g2b1",
-            "title": "More",
+            "title": "More 11",
             "page": "انما الاعمال بالنيات",
             "page_fts": "11 اما الاعمال بالنيات"
         },
@@ -221,7 +221,7 @@ function addSampleData(tx) {
             "page_id": "12",
             "parent_id": "5",
             "book_code": "g2b1",
-            "title": "More",
+            "title": "More 12",
             "page": "انما الاعمال بالنيات",
             "page_fts": "11 اما الاعمال بالنيات"
         },
@@ -229,7 +229,7 @@ function addSampleData(tx) {
             "page_id": "13",
             "parent_id": "5",
             "book_code": "g2b1",
-            "title": "More",
+            "title": "More 13",
             "page": "انما الاعمال بالنيات",
             "page_fts": "11 اما الاعمال بالنيات"
         },
@@ -237,7 +237,7 @@ function addSampleData(tx) {
             "page_id": "14",
             "parent_id": "5",
             "book_code": "g2b1",
-            "title": "More",
+            "title": "More 14",
             "page": "انما الاعمال بالنيات",
             "page_fts": "11 اما الاعمال بالنيات"
         },
@@ -245,7 +245,7 @@ function addSampleData(tx) {
             "page_id": "15",
             "parent_id": "5",
             "book_code": "g2b1",
-            "title": "More",
+            "title": "More 15",
             "page": "انما الاعمال بالنيات",
             "page_fts": "11 اما الاعمال بالنيات"
         },        {
@@ -254,31 +254,31 @@ function addSampleData(tx) {
             "book_code": "g2b2",
             "title": "مسلم",
             "page": "11      أَنَّ هِرَقْلَ أَرْسَلَ ",
-            "page_fts": "11 قال"
+            "page_fts": "11 مسلم"
         },
         {
             "page_id": "1",
             "parent_id": "0",
-            "book_code": "g2b1",
-            "title": "الثاني",
-            "page": "البخاري",
-            "page_fts": "11 البخاري"
+            "book_code": "g2b2",
+            "title": "مسلم",
+            "page": "مسلم مسلم",
+            "page_fts": "11 مسلم"
         },
         {
             "page_id": "2",
             "parent_id": "0",
-            "book_code": "g2b1",
+            "book_code": "g2b2",
             "title": "الثالث",
             "page": "حدثنا",
-            "page_fts": "11 البخاري"
+            "page_fts": "11 مسلم"
         },
         {
             "page_id": "3",
             "parent_id": "2",
-            "book_code": "g2b1",
+            "book_code": "g2b2",
             "title": "Fourth",
             "page": "ابو هريرة",
-            "page_fts": "11 كلام من غير تشكيل"
+            "page_fts": "11 كلام من غير مسلم"
         }
 
     ];
@@ -365,16 +365,32 @@ function getDisplay(book_code, page_id) {
 
     database.transaction(
         function (tx) {
-            var sql = "SELECT * FROM pages where page_id MATCH ?";
-            tx.executeSql(sql, [page_id], function (tx, results) {
+            var sql = "SELECT * FROM pages where book_code = ? AND page_id = ?";
+            var params = [book_code, page_id.toString()];
+            if(book_code === "") {
+                sql = "SELECT * FROM pages where parent_id = 'NO_PARENT'";
+                params = []
+            }
+
+            tx.executeSql(sql, params, function (tx, results) {
                 var len = results.rows.length;
                 if (len != 1) {
-                    //I expect an end of ids
                     console.log('>results != 1 !!! , len=' + len);
-                    //return;
                 }
 
-                page = results.rows.item(0);
+                if(book_code === "") {
+                    var page = "";
+                    for(var i = 0 ; i < len ; i++) {
+                        var row = results.rows.item(i);
+                        var link = strf('javascript:doDisplay(\"{0}\", {1})', row.book_code, row.page_id);
+                        page += strf("<a href=\'{0}\'>{1}</a><br>", link, row.title);
+                    }
+
+                } else {
+
+                    var page = results.rows.item(0);
+                }
+
                 deferred.resolve(page);
 //                  console.log('rows returned: ' + results[0].book_code);
             });
