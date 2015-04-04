@@ -214,7 +214,6 @@ function doTabweeb(title, book_code, page_id, parent_id) {
         if(len == 0) { //no kids
             $("#right-panel").panel("close");
         }
-
     });
 }
 
