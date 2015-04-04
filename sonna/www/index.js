@@ -76,6 +76,8 @@ function doDisplay(book_code, page_id) {
             $('#article-title').empty();
             $('#article-body').empty();
             $('#article-body').append(result);
+            doTabweebBookList();
+
         }
 
 //        $('.page_fts').empty();
@@ -214,6 +216,16 @@ function doTabweeb(title, book_code, page_id, parent_id) {
         }
 
     });
+}
+
+function doTabweebBookList() {
+    $('#tabweeb-tree-head').empty();
+    $('#tabweeb-tree-body').empty();
+
+
+
+
+
 }
 
 //recursive function

@@ -380,11 +380,7 @@ function getDisplay(book_code, page_id) {
 
             tx.executeSql(sql, params, function (tx, results) {
                 var len = results.rows.length;
-                if (len != 1) {
-                    console.log('>results != 1 !!! , len=' + len);
-                }
-
-                if(book_code === "") {
+                if(book_code === "") { //display list of books
                     var page = "";
                     for(var i = 0 ; i < len ; i++) {
                         var row = results.rows.item(i);
@@ -413,8 +409,8 @@ function getKidsNodes(book_code, page_id) {
     var deferred = $.Deferred();
     database.transaction(
         function (tx) {
-            var sql = "SELECT * FROM pages where parent_id MATCH ?";
-            tx.executeSql(sql, [page_id], function (tx, results) {
+            var sql = "SELECT * FROM pages where book_code = ? AND parent_id MATCH ?";
+            tx.executeSql(sql, [book_code, page_id], function (tx, results) {
                 var len = results.rows.length;
                 if (len == 0) {
                     console.log('no kids ! , len=' + len);
@@ -444,9 +440,9 @@ function getParentNode(book_code, page_id, parent_id) {
     var deferred = $.Deferred();
     database.transaction(
         function (tx) {
-            var sql = "SELECT * FROM pages where page_id MATCH ?";
+            var sql = "SELECT * FROM pages where book_code = ? AND page_id MATCH ?";
             var nodeId = parent_id;
-            tx.executeSql(sql, [nodeId], function (tx, results) {
+            tx.executeSql(sql, [book_code, nodeId], function (tx, results) {
                 var len = results.rows.length;
                 if (len != 1) {
                     console.log('parent must be one node!!! , len=' + len);
