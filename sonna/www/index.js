@@ -221,11 +221,6 @@ function doTabweeb(title, book_code, page_id, parent_id) {
 function doTabweebBookList() {
     $('#tabweeb-tree-head').empty();
     $('#tabweeb-tree-body').empty();
-
-
-
-
-
 }
 
 //recursive function
@@ -246,14 +241,8 @@ function showParentNodePath(book_code, page_id, parent_id) {
 }
 
 function setTabweebHeight() {
-
     var height = $(window).height() - $("#toc-separator").position().top ;
-    //if($(window).width() >= 800) {
-    //    height = height - $(".demo-page-top-header").height() - 10;
-    //}
-
     $('.scollable-table-tabweeb').css('max-height', height + 'px');
     console.log(">Tabweeb hits height: " + height);
-
 }
 
