@@ -22,7 +22,7 @@
         <h1> موسوعة السنة </h1>
         <a href="#left-panel" data-icon="carat-r" data-iconpos="left" data-shadow="false" data-iconshadow="false"
            class="ui-nodisc-icon">البحث</a>
-        <a href="#right-panel" data-icon="carat-l" data-iconpos="left" data-shadow="false" data-iconshadow="false"
+        <a href="#right-panel" data-icon="carat-l" data-iconpos="left" data-iconpos="notext" data-shadow="false" data-iconshadow="false"
            class="ui-nodisc-icon">التبويب</a>
     </div>
 
@@ -41,12 +41,15 @@
           <!--</fieldset>-->
         <!--</div>-->
 
-        <form>
-            <input type="button" onclick="doDisplayPrevious()" data-icon="arrow-r" data-iconpos="notext" value="Icon only" data-inline="true">
-            <input type="button" onclick="doDisplayNext()" data-icon="arrow-l" data-iconpos="notext" value="Icon only" data-inline="true">
-        </form>
+        <!--<form>-->
 
-        <br>
+            <input type="button" onclick='doDisplay("", 0)' data-icon="home" data-iconpos="notext" value="Icon only" data-inline="true">
+            &nbsp;&nbsp;&nbsp;
+            <input type="button" onclick="doDisplayPrevious()" data-icon="arrow-r" data-iconpos="notext" value="Icon only" data-inline="true">
+            <input type="button" onclick="doDisplayNext()" data-icon="arrow-l" data-iconpos="notext" value="Icon only" data-inline="true">
+        <!--</form>-->
+
+        <br><br>
 
         <div id="article-title" class="main-app-text"></div>
 

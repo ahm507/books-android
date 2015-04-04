@@ -306,15 +306,18 @@ function addSampleData(tx) {
 //FIXME it does not support relevancy ranking, see workaround: http://www.sqlite.org/fts3.html#appendix_a
 
 
-function getSearchHitsTotalCount(queryString) {
+function getSearchHitsTotalCount(book_code, queryString) {
 
     var deferred = $.Deferred();
     database.transaction(
         function (tx) {
-//             var sql = "SELECT * FROM pages where page_fts MATCH '" + queryString + "'";
-            var sql = strf("SELECT count(*) AS total_count FROM pages where page_fts MATCH '{0}'",
-                queryString);
-            tx.executeSql(sql, [], function (tx, results) {
+            var sql = "SELECT count(*) AS total_count FROM pages WHERE book_code = ? AND page_fts MATCH ?";
+            var params = [book_code, queryString];
+            if(book_code === "") { //empty
+                sql = "SELECT count(*) AS total_count FROM pages WHERE page_fts MATCH ?";
+                params = [queryString];
+            }
+            tx.executeSql(sql, params, function (tx, results) {
 
                 var totalHitsCount = results.rows.item(0);
                 deferred.resolve(totalHitsCount);
@@ -330,14 +333,17 @@ function getSearchHitsTotalCount(queryString) {
     return deferred.promise();
 }
 
-function getSearchHits(queryString, pageSize, pageNo) {
+function getSearchHits(book_code, queryString, pageSize, pageNo) {
     var deferred = $.Deferred();
     database.transaction(
         function (tx) {
-//             var sql = "SELECT * FROM pages where page_fts MATCH '" + queryString + "'";
-            var sql = strf("SELECT * FROM pages where page_fts MATCH '{0}' LIMIT {1} OFFSET {2} ",
-                queryString, pageSize, (pageNo - 1) * pageSize);
-            tx.executeSql(sql, [], function (tx, results) {
+            var sql = "SELECT * FROM pages where book_code = ? AND page_fts MATCH ? LIMIT ? OFFSET ? ";
+            var params = [book_code, queryString, pageSize, (pageNo - 1) * pageSize];
+            if(book_code === "") {
+                sql = "SELECT * FROM pages where page_fts MATCH ? LIMIT ? OFFSET ? ";
+                params = [queryString, pageSize, (pageNo - 1) * pageSize];
+            }
+            tx.executeSql(sql, params, function (tx, results) {
                 //Fill Hits Info
                 var len = results.rows.length;
                 var hits = [];

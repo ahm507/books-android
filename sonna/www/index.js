@@ -121,8 +121,13 @@ function doSearch(pageNo) {
     }
 
     var pageSize = 10;
-//
-    getSearchHits(queryString, pageSize, pageNo).done(function (hits) {
+    var book_code = window.localStorage.getItem("book_code");
+    if(book_code == 'undefined' || book_code.length === 0) {
+        console.log("Empty book_code");
+        book_code = "";
+    }
+
+    getSearchHits(book_code, queryString, pageSize, pageNo).done(function (hits) {
         $('#search-hits').empty();
         var len = hits.length;
         var pageLength = 10;
@@ -138,7 +143,7 @@ function doSearch(pageNo) {
     });
 
     //Get total hist to adjust paging :(
-    getSearchHitsTotalCount(queryString).done(function (results) {
+    getSearchHitsTotalCount(book_code, queryString).done(function (results) {
 
         var total_count = results.total_count;
 
@@ -156,8 +161,6 @@ function doSearch(pageNo) {
         window.localStorage.setItem("totalPages", lastPageNo);
 
     });
-
-
 }
 
 
