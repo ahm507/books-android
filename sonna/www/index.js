@@ -26,10 +26,12 @@ function initialize() {
     }
 
     initializeDB();
+    $("#search-next-prev").hide();
+    //set dynamic styles of scrollable boxes dynamically
+    setTabweebHeight();
 
 }
 
-//FIXME MOVE to onDeviceReady
 // SWIPE Support for touch screens
 $(document).on("pagecreate", "#demo-page", function () {
     $(document).on("swipeleft swiperight", "#demo-page", function (e) {
@@ -38,41 +40,14 @@ $(document).on("pagecreate", "#demo-page", function () {
         // We do this by checking the data that the framework stores on the page element (panel: open).
         if ($(".ui-page-active").jqmData("panel") !== "open") {
             if (e.type === "swipeleft") {
-                $("#right-panel").panel("open");
+                doDisplayPrevious();
             } else if (e.type === "swiperight") {
-                $("#left-panel").panel("open");
+                doDisplayNext();
             }
         }
     });
 });
 
-
-//}());
-
-function getSpaces(count) {
-    var spaces = ""
-    for (var i = 0; i < count; i++) {
-        spaces += "&nbsp;&nbsp;&nbsp;";
-    }
-    return spaces;
-}
-
-//Example: var link = String.format('<a href="{0}/{1}/{2}" title="{3}">{3}</a>', url, year, titleEncoded, title);
-function strf() {
-    // The string containing the format items (e.g. "{0}")
-    // will and always has to be the first argument.
-    var theString = arguments[0];
-    // start with the second argument (i = 1)
-
-//    for(var i in allImgs)
-    for (var i = 1; i < arguments.length; i++) {
-        // "gm" = RegEx options for Global search (more than one instance)
-        // and for Multiline search
-        var regEx = new RegExp("\\{" + (i - 1) + "\\}", "gm");
-        theString = theString.replace(regEx, arguments[i]);
-    }
-    return theString;
-}
 
 function doDisplay(book_code, page_id) {
     //call display
@@ -87,7 +62,10 @@ function doDisplay(book_code, page_id) {
         var parts = result.page.split("##");
 
         $('#article-body').append(parts[0]);
-        if (parts.length > 1) {
+        if (parts.length > 1 && $.trim(parts[1]).length > 0) {
+            var footnote = parts[1];
+            //footnote.replace(/\\n/g, "\\n<br>")
+            footnote = footnote.split("\n").join("<br>")
             $('#article-body').append("<hr>" + parts[1]);
         }
 
@@ -100,7 +78,12 @@ function doDisplay(book_code, page_id) {
 
 }
 
-function doPrevious() {
+function doDisplayFromSearch(book_code, page_id) {
+    doDisplay(book_code, page_id);
+    $("#left-panel").panel("close");
+}
+
+function doDisplayPrevious() {
     var page_id = window.localStorage.getItem("page_id");
     page_id--; //automatic conversion to integer
     if (page_id < 0) {
@@ -112,7 +95,7 @@ function doPrevious() {
     doDisplay(book_code, page_id);
 }
 
-function doNext() {
+function doDisplayNext() {
     var page_id = window.localStorage.getItem("page_id");
     page_id++;
     var book_code = window.localStorage.getItem("book_code");
@@ -121,7 +104,7 @@ function doNext() {
     doDisplay(book_code, page_id);
 }
 
-function doSearch() {
+function doSearch(pageNo) {
     var queryString = $('#query-string').val();
     //alert(queryString)
     queryString = queryString.trim();
@@ -129,41 +112,75 @@ function doSearch() {
         return;
     }
 
-//        $('#search-hits-count').text(hitsCount + " (" + total_count + ")");
-
-    getSearchHits(queryString).done(function (hits) {
+    var pageSize = 10;
+//
+    getSearchHits(queryString, pageSize, pageNo).done(function (hits) {
         $('#search-hits').empty();
         var len = hits.length;
-        for (var i = 0; i < len; i = i + 1) {
+        var pageLength = 10;
+        for (var i = 0; i < len && i < pageLength ; i = i + 1) {
             var title = hits[i].title;
             var page_id = hits[i].page_id;
             var book_code = hits[i].book_code;
             //var searchWords = result_obj.words.join(",");
             var params = strf("('{0}', '{1}')", book_code, page_id);
-            var row = strf("<tr><td><a href=\"javascript:doDisplay{0}\">{1}</a></td></tr>", params, title);
+            var row = strf("<tr><td><a href=\"javascript:doDisplayFromSearch{0}\">{1}</a></td></tr>", params, title);
             $('#search-hits').append(row);
-
         }
+    });
+
+    //Get total hist to adjust paging :(
+    getSearchHitsTotalCount(queryString).done(function (results) {
+
+        var total_count = results.total_count;
+
+        var hitsCount = "نتائج البحث";
+        $('#search-hits-count').text(hitsCount + " (" + total_count + ")");
+
+        //Adjust paging
+        var lastPageNo = Math.ceil(total_count / pageSize);
+        if (pageNo > lastPageNo) {
+            pageNo--;
+        }
+        lastPageNo > 0 ? $("#search-next-prev").show() : $("#search-next-prev").hide();
+        $("search-page-no").text("" + lastPageNo + "/" + pageNo);
+        window.localStorage.setItem("searchPageNo", pageNo);
+        window.localStorage.setItem("totalPages", lastPageNo);
 
     });
+
+
 }
+
+
+function searchNext() {
+    var pageNo = window.localStorage.getItem("searchPageNo");
+    var totalPages = window.localStorage.getItem("totalPages");
+    pageNo++;
+    if (pageNo > totalPages) {
+        pageNo--;
+        return;
+    }
+    doSearch(pageNo);
+}
+
+function searchPrevious() {
+    var pageNo = window.localStorage.getItem("searchPageNo");
+    pageNo--;
+    if (pageNo < 1) {
+        pageNo = 1;
+        return;
+    }
+    doSearch(pageNo);
+}
+
 
 function doTabweeb(title, book_code, page_id, parent_id) {
     $('#tabweeb-tree-head').empty();
 
     var level = 0;
     showParentNodePath(book_code, page_id, parent_id);
-    //decorate nodes
 
-    //var treeHeadHtml = $('#tabweeb-tree-head');
-    //getSpaces(level) +
-
-//     for(var i = 0 ; i < pathNodes.length ; i++ ) {
-//         var anchor = strf("<a href='javascript:doDisplay(\"{0}\", \"{1}\")')>{2}</a>",
-//                 pathNodes[i].book_code, pathNodes[i].parent_id, pathNodes[i].parent_title);
-//         $('#tabweeb-tree-head').append(anchor + "<br>");
-
-//     }
 
     //display title
     $('#tabweeb-tree-head').append("<i><b>" + title + "</b></i><br>");
@@ -176,9 +193,13 @@ function doTabweeb(title, book_code, page_id, parent_id) {
         var len = kids.length;
         for (var i = 0; i < len; i++) {
             var hrefParameters = "('" + book_code + "', '" + kids[i].page_id + "')";
-            $('#tabweeb-tree-body').append("<a href=\"javascript:doDisplay" + hrefParameters +
-            "\">" + kids[i].title + "</a>");
+            $('#tabweeb-tree-body').append("<tr><td><a href=\"javascript:doDisplay" + hrefParameters +
+            "\">" + kids[i].title + "</a></td></tr>");
             $('#tabweeb-tree-body').append("<br>");
+        }
+
+        if(len == 0) { //no kids
+            $("#right-panel").panel("close");
         }
 
     });
@@ -186,25 +207,30 @@ function doTabweeb(title, book_code, page_id, parent_id) {
 
 //recursive function
 function showParentNodePath(book_code, page_id, parent_id) {
-
     if (page_id.valueOf() != "0") {
-
         getParentNode(book_code, page_id, parent_id).done(function (parent) {
-
             if (parent != undefined) {
                 //prepend: insert at the start
                 var anchor = strf("<a href='javascript:doDisplay(\"{0}\", \"{1}\")')>{2}</a>", book_code, parent_id, parent.title);
                 $('#tabweeb-tree-head').prepend(anchor + "<br>");
-//                 pathNodes.push({'book_code': book_code, 'parent_id': parent_id, 'parent_title': parent.title});
             }
-
             //Recursive call
             if (parent != undefined && parent.page_id != "0") {
                 showParentNodePath(book_code, parent.page_id, parent.parent_id)
             }
-
         });
     }
 }
 
+function setTabweebHeight() {
+
+    var height = $(window).height() - $("#toc-separator").position().top ;
+    //if($(window).width() >= 800) {
+    //    height = height - $(".demo-page-top-header").height() - 10;
+    //}
+
+    $('.scollable-table-tabweeb').css('max-height', height + 'px');
+    console.log(">Tabweeb hits height: " + height);
+
+}
 

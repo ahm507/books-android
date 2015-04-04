@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-echo "hardsecure202"
-#rsync -avzhe ssh --exclude-from './rsync-exclude.txt' ../ root@188.166.21.10:/var/www/FamilyWeb/remove
+echo
 
-cp ./platforms/android/ant-build/MainActivity-debug.apk ./sonna.0.2.apk
-rsync -avzhe ssh  ./sonna.0.2.apk root@188.166.21.10:/var/www/FamilyWeb/src/remove/
-rm ./sonna.0.2.apk
+cp ./platforms/android/ant-build/MainActivity-debug.apk ./sonna.0.3.apk
+rsync -avzhe ssh  ./sonna.0.3.apk root@107.170.121.44:/var/lib/tomcat7/webapps/ROOT
+rm ./sonna.0.3.apk
 
-
+echo "Please download from URL:"
+echo "http://107.170.121.44/sonna.0.3.apk"
+echo
 

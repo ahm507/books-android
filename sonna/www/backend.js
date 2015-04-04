@@ -1,24 +1,33 @@
 // BACK END SERVICES ONLY, NO UI HERE
 
 var database;
-function initializeDB () {
+function initializeDB() {
     var deferred = $.Deferred();
-
-    //Show Hour glass
-    $.mobile.loading( "show", {
-      text: "",
-      textVisible: false,
-      theme: "z",
-      html: ""
-    });
 
     //FIXME only copy on installation, first time, not with each run
     //it is important to remove any old pending file
 
-    if(typeof mac_browser_test === 'undefined'){
+    if (typeof mac_browser_test === 'undefined') {
         console.log("mac_browser_test is undefined ");
-        window.plugins.sqlDB.remove("sonna.sqlite", removeSuccess, removeError);
-        window.plugins.sqlDB.copy("sonna.sqlite", copySuccess, copyError);
+
+        dbNeedsCopy().done(function (result) {
+            if (result === true) {
+                //Show Hour glass
+                $.mobile.loading("show", {
+                    text: "",
+                    textVisible: false,
+                    theme: "z",
+                    html: ""
+                });
+
+                window.plugins.sqlDB.remove("sonna.sqlite", removeSuccess, removeError);
+                window.plugins.sqlDB.copy("sonna.sqlite", copySuccess, copyError);
+            }
+        });
+
+        //window.localStorage.setItem("db_file_copied", "true");
+
+
     } else { //Browser debug
         console.log("mac_browser_test = ", mac_browser_test);
         OpenMyDatabase(); //oncopy event will not work
@@ -36,11 +45,11 @@ function removeError() {
     console.log(">ERROR, unable to remove sonna.sqlite!!!");
 }
 
-function OpenMyDatabase(){
-            //if not the debugger of my MAC
-    if(typeof mac_browser_test === 'undefined'){
+function OpenMyDatabase() {
+    //if not the debugger of my MAC
+    if (typeof mac_browser_test === 'undefined') {
         //sqlitePlugin: "createFromLocation: 1" NEVER WORKS WITH ME
-        database = window.sqlitePlugin.openDatabase({name:"sonna.sqlite"});
+        database = window.sqlitePlugin.openDatabase({name: "sonna.sqlite"});
 
     } else { //My Desktop Debugger
 
@@ -62,33 +71,32 @@ function OpenMyDatabase(){
     }
 }
 
-function copySuccess () {
+function copySuccess() {
     console.log(">Success in copying sonna.sqlite");
 
     OpenMyDatabase();
 
-        var page_id = "0";
+    var page_id = "0";
 
-        database.transaction(
-            function (tx) {
+    database.transaction(
+        function (tx) {
+
+            //Hide Hour glass
+            $.mobile.loading("hide", {
+                text: "",
+                textVisible: false,
+                theme: "z",
+                html: ""
+            });
+
+            doDisplay("g2b1", 0);
 
 
-              //Hide Hour glass
-                $.mobile.loading( "hide", {
-                      text: "",
-                      textVisible: false,
-                      theme: "z",
-                      html: ""
-                    });
-
-                doDisplay("g2b1", 0);
-
-
-            },
-            function (error) {
-               console.log(">Error: " + error.message);
-            }
-        );
+        },
+        function (error) {
+            console.log(">Error: " + error.message);
+        }
+    );
 
 }
 
@@ -96,7 +104,7 @@ function copyError() {
     console.log(">Failed to copy sonna.sqlite!!!");
 }
 
-function createTable (tx) {
+function createTable(tx) {
     tx.executeSql('DROP TABLE IF EXISTS pages');
     var sql = "CREATE VIRTUAL TABLE pages USING fts3( " +
         "page_id, parent_id, book_code, title, page, page_fts);";
@@ -108,19 +116,171 @@ function createTable (tx) {
         function (tx, error) {
             alert('Create table error: ' + error.message);
         });
-    }
+}
 
- function addSampleData (tx) {
+function addSampleData(tx) {
 
     var ahadith = [
-        {"page_id": "0", "parent_id": "NO_PARENT", "book_code": "g2b1", "title":"الأول", "page": "أَبَا سُفْيَانَ بْنَ حَرْبٍ أَخْبَرَهُ أَنَّ هِرَقْلَ أَرْسَلَ ", "page_fts": "قال" },
-        {"page_id": "1", "parent_id": "0", "book_code": "g2b1", "title":"الثاني", "page": "البخاري", "page_fts": "البخاري" },
-        {"page_id": "2", "parent_id": "0", "book_code": "g2b1", "title":"الثالث", "page": "حدثنا", "page_fts": "البخاري" },
-        {"page_id": "3", "parent_id": "2", "book_code": "g2b1", "title":"Fourth", "page": "ابو هريرة", "page_fts": "كلام من غير تشكيل" },
-        {"page_id": "4", "parent_id": "3", "book_code": "g2b1", "title":"Fifth", "page": " بالتشكيل عن عمر بن الخطاب", "page_fts": "كلام من غير تشكيل" },
-        {"page_id": "5", "parent_id": "3", "book_code": "g2b1", "title":"Six", "page": "سمعت رسول", "page_fts": "الاعمال تاني" },
-        {"page_id": "6", "parent_id": "5", "book_code": "g2b1", "title":"Seven", "page": "الله يقول", "page_fts": "اي حاجه" },
-        {"page_id": "7", "parent_id": "5", "book_code": "g2b1", "title":"Eight", "page": "انما الاعمال بالنيات", "page_fts": "اما الاعمال بالنيات" }
+        {
+            "page_id": "0",
+            "parent_id": "NO_PARENT",
+            "book_code": "g2b1",
+            "title": "البخاري",
+            "page": "11      أَنَّ هِرَقْلَ أَرْسَلَ ",
+            "page_fts": "11 قال"
+        },
+        {
+            "page_id": "1",
+            "parent_id": "0",
+            "book_code": "g2b1",
+            "title": "الثاني",
+            "page": "البخاري",
+            "page_fts": "11 البخاري"
+        },
+        {
+            "page_id": "2",
+            "parent_id": "0",
+            "book_code": "g2b1",
+            "title": "الثالث",
+            "page": "حدثنا",
+            "page_fts": "11 البخاري"
+        },
+        {
+            "page_id": "3",
+            "parent_id": "2",
+            "book_code": "g2b1",
+            "title": "Fourth",
+            "page": "ابو هريرة",
+            "page_fts": "11 كلام من غير تشكيل"
+        },
+        {
+            "page_id": "4",
+            "parent_id": "3",
+            "book_code": "g2b1",
+            "title": "Fifth",
+            "page": " بالتشكيل عن عمر بن الخطاب",
+            "page_fts": "11 كلام من غير تشكيل"
+        },
+        {
+            "page_id": "5",
+            "parent_id": "3",
+            "book_code": "g2b1",
+            "title": "Six",
+            "page": "سمعت رسول",
+            "page_fts": "11 الاعمال تاني"
+        },
+        {
+            "page_id": "6",
+            "parent_id": "5",
+            "book_code": "g2b1",
+            "title": "Seven",
+            "page": "الله يقول",
+            "page_fts": "11 اي حاجه"
+        },
+        {
+            "page_id": "7",
+            "parent_id": "5",
+            "book_code": "g2b1",
+            "title": "Eight",
+            "page": "انما الاعمال بالنيات",
+            "page_fts": "11 اما الاعمال بالنيات"
+        },
+        {
+            "page_id": "8",
+            "parent_id": "5",
+            "book_code": "g2b1",
+            "title": "More",
+            "page": "انما الاعمال بالنيات",
+            "page_fts": "11 اما الاعمال بالنيات"
+        },
+        {
+            "page_id": "9",
+            "parent_id": "5",
+            "book_code": "g2b1",
+            "title": "More",
+            "page": "انما الاعمال بالنيات",
+            "page_fts": "11 اما الاعمال بالنيات"
+        },
+        {
+            "page_id": "10",
+            "parent_id": "5",
+            "book_code": "g2b1",
+            "title": "More",
+            "page": "انما الاعمال بالنيات",
+            "page_fts": "11 اما الاعمال بالنيات"
+        },
+        {
+            "page_id": "11",
+            "parent_id": "5",
+            "book_code": "g2b1",
+            "title": "More",
+            "page": "انما الاعمال بالنيات",
+            "page_fts": "11 اما الاعمال بالنيات"
+        },
+        {
+            "page_id": "12",
+            "parent_id": "5",
+            "book_code": "g2b1",
+            "title": "More",
+            "page": "انما الاعمال بالنيات",
+            "page_fts": "11 اما الاعمال بالنيات"
+        },
+        {
+            "page_id": "13",
+            "parent_id": "5",
+            "book_code": "g2b1",
+            "title": "More",
+            "page": "انما الاعمال بالنيات",
+            "page_fts": "11 اما الاعمال بالنيات"
+        },
+        {
+            "page_id": "14",
+            "parent_id": "5",
+            "book_code": "g2b1",
+            "title": "More",
+            "page": "انما الاعمال بالنيات",
+            "page_fts": "11 اما الاعمال بالنيات"
+        },
+        {
+            "page_id": "15",
+            "parent_id": "5",
+            "book_code": "g2b1",
+            "title": "More",
+            "page": "انما الاعمال بالنيات",
+            "page_fts": "11 اما الاعمال بالنيات"
+        },        {
+            "page_id": "0",
+            "parent_id": "NO_PARENT",
+            "book_code": "g2b2",
+            "title": "مسلم",
+            "page": "11      أَنَّ هِرَقْلَ أَرْسَلَ ",
+            "page_fts": "11 قال"
+        },
+        {
+            "page_id": "1",
+            "parent_id": "0",
+            "book_code": "g2b1",
+            "title": "الثاني",
+            "page": "البخاري",
+            "page_fts": "11 البخاري"
+        },
+        {
+            "page_id": "2",
+            "parent_id": "0",
+            "book_code": "g2b1",
+            "title": "الثالث",
+            "page": "حدثنا",
+            "page_fts": "11 البخاري"
+        },
+        {
+            "page_id": "3",
+            "parent_id": "2",
+            "book_code": "g2b1",
+            "title": "Fourth",
+            "page": "ابو هريرة",
+            "page_fts": "11 كلام من غير تشكيل"
+        }
+
     ];
     var l = ahadith.length;
     var sql = "INSERT OR REPLACE INTO pages " +
@@ -142,11 +302,41 @@ function createTable (tx) {
 
 }
 
-function getSearchHits(queryString) {
+//TODO see Contentless FTS4 Tables, http://www.sqlite.org/fts3.html#section_4_1
+//FIXME it does not support relevancy ranking, see workaround: http://www.sqlite.org/fts3.html#appendix_a
+
+
+function getSearchHitsTotalCount(queryString) {
+
     var deferred = $.Deferred();
     database.transaction(
         function (tx) {
-            var sql = "SELECT * FROM pages where page_fts MATCH '" + queryString + "'";
+//             var sql = "SELECT * FROM pages where page_fts MATCH '" + queryString + "'";
+            var sql = strf("SELECT count(*) AS total_count FROM pages where page_fts MATCH '{0}'",
+                queryString);
+            tx.executeSql(sql, [], function (tx, results) {
+
+                var totalHitsCount = results.rows.item(0);
+                deferred.resolve(totalHitsCount);
+                console.log("Total hits returned are " + totalHitsCount);
+            });
+        },
+        function (error) {
+            console.log('>Search ERROR: ' + error.message);
+            deferred.reject("Search Error: " + error.message);
+        }
+    );
+
+    return deferred.promise();
+}
+
+function getSearchHits(queryString, pageSize, pageNo) {
+    var deferred = $.Deferred();
+    database.transaction(
+        function (tx) {
+//             var sql = "SELECT * FROM pages where page_fts MATCH '" + queryString + "'";
+            var sql = strf("SELECT * FROM pages where page_fts MATCH '{0}' LIMIT {1} OFFSET {2} ",
+                queryString, pageSize, (pageNo - 1) * pageSize);
             tx.executeSql(sql, [], function (tx, results) {
                 //Fill Hits Info
                 var len = results.rows.length;
@@ -155,7 +345,7 @@ function getSearchHits(queryString) {
                     hits[i] = results.rows.item(i);
                 }
                 deferred.resolve(hits);
-                console.log("hits returned are " + results.rows.length)
+                console.log("Hits returned are " + results.rows.length)
             });
         },
         function (error) {
@@ -163,23 +353,25 @@ function getSearchHits(queryString) {
             deferred.reject("Search Error: " + error.message);
         }
     );
+
+
     return deferred.promise();
 }
 
-function getDisplay (book_code, page_id) {
+function getDisplay(book_code, page_id) {
     var deferred = $.Deferred();
 
-    //OpenMyDatabase();
+    OpenMyDatabase();
 
     database.transaction(
         function (tx) {
             var sql = "SELECT * FROM pages where page_id MATCH ?";
             tx.executeSql(sql, [page_id], function (tx, results) {
                 var len = results.rows.length;
-                if(len != 1) {
+                if (len != 1) {
                     //I expect an end of ids
                     console.log('>results != 1 !!! , len=' + len);
-                    return;
+                    //return;
                 }
 
                 page = results.rows.item(0);
@@ -188,8 +380,8 @@ function getDisplay (book_code, page_id) {
             });
         },
         function (error) {
-           deferred.reject("Display Error: " + error.message);
-           console.log(">Error: " + error.message);
+            deferred.reject("Display Error: " + error.message);
+            console.log(">Error: " + error.message);
         }
     );
     return deferred.promise();
@@ -202,7 +394,7 @@ function getKidsNodes(book_code, page_id) {
             var sql = "SELECT * FROM pages where parent_id MATCH ?";
             tx.executeSql(sql, [page_id], function (tx, results) {
                 var len = results.rows.length;
-                if(len == 0) {
+                if (len == 0) {
                     console.log('no kids ! , len=' + len);
                     var kids = []
                     deferred.resolve(kids); //simply no kids
@@ -218,8 +410,8 @@ function getKidsNodes(book_code, page_id) {
             });
         },
         function (error) {
-           deferred.reject("Display Error: " + error.message);
-           console.log(">Error: " + error.message);
+            deferred.reject("Display Error: " + error.message);
+            console.log(">Error: " + error.message);
         }
     );
     return deferred.promise();
@@ -232,25 +424,67 @@ function getParentNode(book_code, page_id, parent_id) {
         function (tx) {
             var sql = "SELECT * FROM pages where page_id MATCH ?";
             var nodeId = parent_id;
-                tx.executeSql(sql, [nodeId], function (tx, results) {
-                    var len = results.rows.length;
-                    if(len != 1) {
-                        console.log('parent must be one node!!! , len=' + len);
-                        var parent
-                        deferred.resolve(parent); //return empty parents so the block works
-                        return;
-                    } else {
-                        console.log('Got the parent, node_id=' + results.rows.item(0).page_id);
-                    }
-                    var parent = results.rows.item(0);
-                    deferred.resolve(parent);
-                });
+            tx.executeSql(sql, [nodeId], function (tx, results) {
+                var len = results.rows.length;
+                if (len != 1) {
+                    console.log('parent must be one node!!! , len=' + len);
+                    var parent
+                    deferred.resolve(parent); //return empty parents so the block works
+                    return;
+                } else {
+                    console.log('Got the parent, node_id=' + results.rows.item(0).page_id);
+                }
+                var parent = results.rows.item(0);
+                deferred.resolve(parent);
+            });
         },
         function (error) {
-           deferred.reject("Display Error: " + error.message);
-           console.log("Error: " + error.message);
+            deferred.reject("Display Error: " + error.message);
+            console.log("Error: " + error.message);
         }
     );
     return deferred.promise();
 }
 
+
+//Create database with table, if it exist then no copy needed
+function dbNeedsCopy() {
+    var deferred = $.Deferred();
+
+//Try to open, if exception happened, then YES
+
+    try {
+        database = window.sqlitePlugin.openDatabase({name: "copied.sqlite"});
+    } catch (err) {
+        deferred.resolve(true);
+    }
+
+    //check flag
+    database.transaction(
+        function (tx) {
+            var sql = "SELECT * FROM copied_status";
+            tx.executeSql(sql, [],
+                function (tx, results) {
+                    deferred.resolve(false); //does not need copy
+                });
+        },
+        function (error) {
+            //table does not exist; just create it then return
+            database.transaction(
+                function(tx){
+                    tx.executeSql("CREATE TABLE 'copied_status' ('copied' TEXT NOT NULL)");
+                },
+                function (error) {
+                    console.log(">Unable to create table! " + error.message);
+                    deferred.resolve(true);
+                }
+            );
+
+            console.log(">I created the table: " + error.message);
+            deferred.resolve(true); //needs copy because generally table does not exist
+        }
+    );
+
+    return deferred.promise();
+
+}

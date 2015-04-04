@@ -19,9 +19,9 @@
 
     <!-- data-theme="c"  makes the content of body scroll into header and footer -->
     <div data-role="header" data-theme="a" data-position="fixed">
-        <h1> السنة </h1>
+        <h1> موسوعة السنة </h1>
         <a href="#left-panel" data-icon="carat-r" data-iconpos="left" data-shadow="false" data-iconshadow="false"
-           class="ui-nodisc-icon">خدمات</a>
+           class="ui-nodisc-icon">البحث</a>
         <a href="#right-panel" data-icon="carat-l" data-iconpos="left" data-shadow="false" data-iconshadow="false"
            class="ui-nodisc-icon">التبويب</a>
     </div>
@@ -42,8 +42,8 @@
         <!--</div>-->
 
         <form>
-            <input type="button" onclick="doPrevious()" data-icon="arrow-r" data-iconpos="notext" value="Icon only" data-inline="true">
-            <input type="button" onclick="doNext()" data-icon="arrow-l" data-iconpos="notext" value="Icon only" data-inline="true">
+            <input type="button" onclick="doDisplayPrevious()" data-icon="arrow-r" data-iconpos="notext" value="Icon only" data-inline="true">
+            <input type="button" onclick="doDisplayNext()" data-icon="arrow-l" data-iconpos="notext" value="Icon only" data-inline="true">
         </form>
 
         <br>
@@ -78,15 +78,18 @@
 
                     <input type="text" name="text-basic" id="query-string" value="">
 
-                    <a onclick="doSearch()" class="ui-shadow ui-btn ui-corner-all">بحث</a>
+                    <a onclick="doSearch(1)" class="ui-shadow ui-btn ui-corner-all">بحث</a>
                     <!--<input type="button" value="Click Me!" onclick="doSearch()">-->
 
+                    <br>
+
+                    <div id="search-hits-count"></div>
 
                     <br>
 
                     <!-- Search Hits if any -->
                     <table data-role="table" id="search-hits"  data-column-popup-theme="a"
-                            class="scollable-table ui-body-d ui-shadow table-stripe ui-responsive" >
+                            class="scollable-table-search ui-body-d ui-shadow table-stripe ui-responsive" >
                          <thead>
                            <tr class="ui-bar-d">
                            </tr>
@@ -96,7 +99,11 @@
 
                     </table>
 
-
+                    <div id="search-next-prev">
+                        <input type="button" onclick="searchPrevious()" data-icon="arrow-r" data-iconpos="notext" value="Icon only" data-inline="true">
+                        <search-page-no id="search-page-no"></search-page-no>
+                        <input type="button" onclick="searchNext()" data-icon="arrow-l" data-iconpos="notext" value="Icon only" data-inline="true">
+                    </div>
 
 
     </div>
@@ -105,12 +112,20 @@
          data-theme="a"  data-position-fixed="true">
 
 
-        <h2 align="center">شجرة الموضوعات</h2>
+        <!--<h2 align="center">شجرة الموضوعات</h2>-->
 
         <div id="tabweeb-tree-head"></div>
-        <hr>
-        <div id="tabweeb-tree-body"></div>
-
+        <hr id="toc-separator">
+        <!--<div id="tabweeb-tree-body" style="scollable-table-tabweeb"></div>-->
+        <table data-role="table" id="tabweeb-tree-body"  data-column-popup-theme="a"
+                class="scollable-table-tabweeb ui-body-d ui-shadow table-stripe ui-responsive" >
+             <thead>
+               <tr class="ui-bar-d">
+               </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
 
 
     </div>
@@ -130,6 +145,7 @@
     <script src="mac-browser-test.js"></script>
 
     <script src="backend.js"></script>
+    <script src="utils.js"></script>
     <script src="index.js"></script>
 
 

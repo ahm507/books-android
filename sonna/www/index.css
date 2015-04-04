@@ -84,7 +84,7 @@ textarea, body, input, td {
 
 }
 
-.scollable-table {
+.scollable-table-search {
     max-height:300px;
     display: block;
 	overflow: auto;
@@ -92,3 +92,10 @@ textarea, body, input, td {
 
 }
 
+.scollable-table-tabweeb {
+    max-height:300px;
+    display: block;
+	overflow: auto;
+	width: 100%
+
+}

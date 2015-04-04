@@ -2,10 +2,10 @@
 <widget id="com.hammad.sonna" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Sonna</name>
     <description>
-        Encyclopedia of Sonna
+        Sonna
     </description>
     <author email="ahm507@gmail.com" href="http://ahmed-m-hammad.blogspot.com">
-        Apache Cordova Team
+        Ahmed Hammad
     </author>
     <content src="index.html" />
     <access origin="*" />

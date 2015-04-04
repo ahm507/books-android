@@ -1,14 +1,41 @@
 
-# TODO Make display work: next, prev.
-# TODO integrate with the real sqlite
-# TODO TOC functionality
-# TODO search functionality
+Bukhary and Muslim
+
+5- الصفحة الأولى مدون عليها أسماء المراجع - البخارى - مسلم - ... وعند لمس
+اسم المرجع يظهر ما يظهر حاليا عند اختيار التبويب وبالتالى لا داعى للتبويب
 
 
-# FIXME download custom version of jquery-mobile with only used components
-# FIXME add minification as a automated step to all scripts including mine
-
-# TODO zipping/unzipping sqlite: https://github.com/MobileChromeApps/zip
+2- لا داعى لوجود الأسهم بالصفحة الأولى عند بداية التشغيل لأنهم غير ذو فائدة
 
 
+6- مطلوب إضافة carriage Return
+فى نهاية كل سطر من سطور معانى الكلمات فى نهاية الحديث الشريف لأن ضم
+سطور معانى الكلمات يؤدى إلى اختلاف المعنى
 
+
+3-  الأسهم فى الصفحات التالية أسهم فقط دون الدائرة
+
+4- الصفحة الأولى لها خلفية المسجد النبوى مثل المرفقة مثلا
+
+7- عند استخدام مفتاح التليفون للعودة للصفحة السابقة يخرج من البرنامج
+ولا يعو للصفحة السابقة بالبرنامج
+ بمعنى أوضح عند الانتهاء من تصفح الكتاب الأول  بدء الوحى فى البخارى وأريد استكمال 
+ تصفح الكتاب التالى فى البخارى أيضا وهو كتاب  ألإيمان ماذا أفعل
+ حتى فى الوضع الحالى عند استخدام خاصية التبويب نجد أنه يوضح الموطن فقط
+ 
+8- يمكن استخدام جزء من الصورة المرفقة كأيقونة
+
+9- هل يمكن إضافة خاصية الطباعة للحديث 
+
+
+
+//FIXME copy books only after installation problem
+
+//TODO Work with 12 books
+//FIXME download custom version of jquery-mobile with only used components
+//FIXME add minification as a automated step to all scripts including mine
+
+//TODO copy with large files can be slow. How can I open the file without copying.
+
+
+1- الخط على الجهاز هو خط توما كما هو مرفق
