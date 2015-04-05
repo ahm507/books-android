@@ -28,7 +28,7 @@ function initialize() {
     initializeDB();
     $("#search-next-prev").hide();
     //set dynamic styles of scrollable boxes dynamically
-    setTabweebHeight();
+    setTocHeight();
 
 }
 
@@ -56,8 +56,14 @@ function doDisplay(book_code, page_id) {
         window.localStorage.setItem("page_id", result.page_id);
 
         if(book_code.length > 0) {
-            $('#article-title').empty();
-            $('#article-title').append(result.title);
+
+
+            //Head of the display and TOC
+            doTabweeb(result.title, result.book_code, result.page_id, result.parent_id);
+
+
+            //$('#article-title').empty();
+            //$('#article-title').append(result.title);
 
             $('#article-body').empty();
             var parts = result.page.split("##");
@@ -69,13 +75,15 @@ function doDisplay(book_code, page_id) {
                 footnote = footnote.split("\n").join("<br>")
                 $('#article-body').append("<hr>" + footnote);
             }
-            doTabweeb(result.title, result.book_code, result.page_id, result.parent_id);
+
+
 
         } else {
             //home page
             $('#article-title').empty();
             $('#article-body').empty();
             $('#article-body').append(result);
+            $('#display-tree-body').empty();
             doTabweebBookList();
 
         }
@@ -85,6 +93,30 @@ function doDisplay(book_code, page_id) {
 
 
     });
+
+    //Add body of nodes if there are kids
+    if(book_code.length > 0) {
+
+        //if there are kids, display them
+        getKidsNodes(book_code, page_id).done(function (kids) {
+            var len = kids.length;
+            if (len == 0) {
+                $('#display-tree-body').empty();
+            }
+                        
+            for (var i = 0; i < len; i++) {
+                if(i == 0) {
+                    $('#display-tree-body').empty();
+                    $('#article-body').empty();
+                }
+                var hrefParameters = "('" + book_code + "', '" + kids[i].page_id + "')";
+                $('#display-tree-body').append("<a href=\"javascript:doDisplay" + hrefParameters +
+                "\">" + kids[i].title + "</a><br>");
+            }
+        });
+
+    }
+
 
 }
 
@@ -190,17 +222,20 @@ function searchPrevious() {
 
 function doTabweeb(title, book_code, page_id, parent_id) {
     $('#tabweeb-tree-head').empty();
+    $('#display-tree-head').empty();
 
     var level = 0;
     showParentNodePath(book_code, page_id, parent_id);
 
 
     //display title
-    $('#tabweeb-tree-head').append("<i><b>" + title + "</b></i><br>");
+    $('#tabweeb-tree-head').append(title);
+    $('#display-tree-head').append(title);
+    $('#display-tree-head').append("<hr>");
 
     ////////////////////////////////////////////////
 
-    getKidsNodes(book_code, page_id, parent_id).done(function (kids) {
+    getKidsNodes(book_code, page_id).done(function (kids) {
         $('#tabweeb-tree-body').empty();
 
         var len = kids.length;
@@ -220,6 +255,7 @@ function doTabweeb(title, book_code, page_id, parent_id) {
 function doTabweebBookList() {
     $('#tabweeb-tree-head').empty();
     $('#tabweeb-tree-body').empty();
+    $('#display-tree-head').empty();
 }
 
 //recursive function
@@ -230,6 +266,7 @@ function showParentNodePath(book_code, page_id, parent_id) {
                 //prepend: insert at the start
                 var anchor = strf("<a href='javascript:doDisplay(\"{0}\", \"{1}\")')>{2}</a>", book_code, parent_id, parent.title);
                 $('#tabweeb-tree-head').prepend(anchor + "<br>");
+                $('#display-tree-head').prepend(anchor + "<br>");
             }
             //Recursive call
             if (parent != undefined && parent.page_id != "0") {
@@ -239,7 +276,9 @@ function showParentNodePath(book_code, page_id, parent_id) {
     }
 }
 
-function setTabweebHeight() {
+//FIXME change Tabweeb to Toc
+
+function setTocHeight() {
     var height = $(window).height() - $("#toc-separator").position().top ;
     $('.scollable-table-tabweeb').css('max-height', height + 'px');
     console.log(">Tabweeb hits height: " + height);
