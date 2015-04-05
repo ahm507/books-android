@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sonna</title>
+    <title></title>
     <link rel="shortcut icon" href="favicon.ico">
 
     <link rel="stylesheet" href="lib/jqm/jquery.mobile-1.4.5.css">
@@ -11,7 +11,7 @@
 
     <script src="lib/jq/jquery-1.11.2.js"></script>
     <script src="lib/jqm/jquery.mobile-1.4.5.js"></script>
-    <!--<script src="lib/jquery.cookie.js"></script>-->
+    <!--<script src="lib/jquery.cookie.js"></script> cookies are not usable on Android-->
 </head>
 <body>
 
@@ -33,25 +33,20 @@
 
         <div class="page-title main-app-text"></div>
 
-        <!--<div class="ui-field-contain">-->
-          <!--<fieldset data-role="controlgroup" data-type="horizontal">-->
-            <!--<input type="checkbox" name="checkbox-6" id="checkbox-6" class="custom" data-inline="true">-->
-            <!--<label for="checkbox-6"  data-inline="true">التشكيل</label>-->
 
-          <!--</fieldset>-->
-        <!--</div>-->
-
-        <!--<form>-->
-
-            <input type="button" onclick='doDisplay("", 0)' data-icon="home" data-iconpos="notext" value="Icon only" data-inline="true">
-            &nbsp;&nbsp;&nbsp;
-            <input type="button" onclick="doDisplayPrevious()" data-icon="arrow-r" data-iconpos="notext" value="Icon only" data-inline="true">
-            <input type="button" onclick="doDisplayNext()" data-icon="arrow-l" data-iconpos="notext" value="Icon only" data-inline="true">
-        <!--</form>-->
+        <input type="button" onclick='doDisplay("", 0)' data-icon="home" data-iconpos="notext" value="Icon only" data-inline="true">
+        &nbsp;&nbsp;&nbsp;
+        <input type="button" onclick="doDisplayPrevious()" data-icon="arrow-r" data-iconpos="notext" value="Icon only" data-inline="true">
+        <input type="button" onclick="doDisplayNext()" data-icon="arrow-l" data-iconpos="notext" value="Icon only" data-inline="true">
 
         <br><br>
 
-        <div id="article-title" class="main-app-text"></div>
+        <div id="display-tree-head"></div>
+
+        <div id="display-tree-body"></div>
+
+
+        <!--<div id="article-title" class="main-app-text"></div>-->
 
         <div id="article-body" class="page main-app-text"></div>
         <!--<hr>-->
@@ -141,16 +136,13 @@
 </div>
 <!-- /page -->
 
-    <!--<script src="../platforms/android/platform_www/cordova.js"></script>-->
+    <!--The following two files are useful only in dev mode on a browser, they do not used in mobile-->
     <script src="cordova.js"></script>
-
-
     <script src="mac-browser-test.js"></script>
 
     <script src="backend.js"></script>
     <script src="utils.js"></script>
     <script src="index.js"></script>
-
 
 </body>
 </html>

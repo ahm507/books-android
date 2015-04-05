@@ -22,6 +22,10 @@ function initializeDB() {
 
                 window.plugins.sqlDB.remove("sonna.sqlite", removeSuccess, removeError);
                 window.plugins.sqlDB.copy("sonna.sqlite", copySuccess, copyError);
+            } else {
+                OpenMyDatabase();
+                doDisplay("", 0);
+
             }
         });
 
@@ -367,7 +371,7 @@ function getSearchHits(book_code, queryString, pageSize, pageNo) {
 function getDisplay(book_code, page_id) {
     var deferred = $.Deferred();
 
-    OpenMyDatabase();
+    //OpenMyDatabase();
 
     database.transaction(
         function (tx) {
@@ -389,7 +393,6 @@ function getDisplay(book_code, page_id) {
                     }
 
                 } else {
-
                     var page = results.rows.item(0);
                 }
 
