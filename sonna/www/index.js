@@ -1,4 +1,5 @@
 
+
 if (typeof mac_browser_test === 'undefined') {
     document.addEventListener('deviceready', onDeviceReady, false);
 } else {
@@ -24,7 +25,7 @@ function onBackButtonClick() {
     console.log("Back button:");
     historyPop();
     var back = historyPop(); //it will be added again in onDisplay()
-    if(back != 'undefined') {
+    if(typeof back !== 'undefined') {
         doDisplay(back.book_code, back.page_id)
     }
 }
@@ -184,7 +185,7 @@ function doSearch(pageNo) {
 
     var pageSize = 10;
     var book_code = window.localStorage.getItem("book_code");
-    if(book_code == 'undefined' || book_code.length === 0) {
+    if(typeof book_code === 'undefined' || book_code.length === 0) {
         console.log("Empty book_code");
         book_code = "";
     }
@@ -290,14 +291,14 @@ function doTabweebBookList() {
 function showParentNodePath(book_code, page_id, parent_id) {
     if (page_id.valueOf() != "0") {
         getParentNode(book_code, page_id, parent_id).done(function (parent) {
-            if (parent != undefined) {
+            if (typeof parent !== 'undefined') {
                 //prepend: insert at the start
                 var anchor = strf("<a href='javascript:doDisplay(\"{0}\", \"{1}\")')>{2}</a>", book_code, parent_id, parent.title);
                 $('#tabweeb-tree-head').prepend(anchor + "<br>");
                 $('#display-tree-head').prepend(anchor + "<br>");
             }
             //Recursive call
-            if (parent != undefined && parent.page_id != "0") {
+            if (typeof parent !== 'undefined' && parent.page_id != "0") {
                 showParentNodePath(book_code, parent.page_id, parent.parent_id)
             }
         });

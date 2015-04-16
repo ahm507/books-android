@@ -11,7 +11,6 @@ Copy books only after installation problem
 
 
 
-
 6- مطلوب إضافة carriage Return
 فى نهاية كل سطر من سطور معانى الكلمات فى نهاية الحديث الشريف لأن ضم
 سطور معانى الكلمات يؤدى إلى اختلاف المعنى
