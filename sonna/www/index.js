@@ -12,13 +12,11 @@ function onDeviceReady() {
     initialize();
 }
 
-
+//Used to fire back event in case of Desktop development to easily test the code
 function keyDownTextField(e) {
-var keyCode = e.keyCode;
-  var b_char = 66;
-  if(keyCode == b_char) { //
-    onBackButtonClick();
-  }
+    if(e.keyCode == 66) { //b keyboard character
+        onBackButtonClick();
+    }
 }
 
 function onBackButtonClick() {
@@ -52,10 +50,7 @@ function initialize() {
 
     //simulate the andorid device back button
     document.addEventListener("keydown", keyDownTextField, false);
-
-
 }
-
 
 
 // SWIPE Support for touch screens
@@ -74,19 +69,18 @@ $(document).on("pagecreate", "#demo-page", function () {
     });
 });
 
-
 function doDisplay(book_code, page_id) {
+     //Hide to avoid flickering while updating content
+      $('#main-page-contents').hide();
+
     //call display
     getDisplay(book_code, page_id).done(function (result) {
         window.localStorage.setItem("book_code", result.book_code);
         window.localStorage.setItem("page_id", result.page_id);
 
         if(book_code.length > 0) {
-
-
             //Head of the display and TOC
             doTabweeb(result.title, result.book_code, result.page_id, result.parent_id);
-
 
             //$('#article-title').empty();
             //$('#article-title').append(result.title);
@@ -109,8 +103,7 @@ function doDisplay(book_code, page_id) {
             doTabweebBookList();
 
         }
-        var current = {book_code: book_code, page_id: page_id};
-        historyPush(current);
+        historyPush({book_code: book_code, page_id: page_id});
 //        $('.page_fts').empty();
 //        $('.page_fts').append(page.page_fts);
 
@@ -143,8 +136,13 @@ function doDisplay(book_code, page_id) {
         //There is no display, just book list
         $("#next-prev-buttons").hide();
 
-
     }
+
+    //This function helps hide the tree part flickering
+    var myVar = setInterval(function(){
+                 clearInterval(myVar);
+                   $('#main-page-contents').show();
+        }, 100);
 
 
 }
@@ -226,7 +224,6 @@ function doSearch(pageNo) {
     });
 }
 
-
 function searchNext() {
     var pageNo = window.localStorage.getItem("searchPageNo");
     var totalPages = window.localStorage.getItem("totalPages");
@@ -248,14 +245,12 @@ function searchPrevious() {
     doSearch(pageNo);
 }
 
-
 function doTabweeb(title, book_code, page_id, parent_id) {
     $('#tabweeb-tree-head').empty();
     $('#display-tree-head').empty();
 
     var level = 0;
     showParentNodePath(book_code, page_id, parent_id);
-
 
     //display title
     $('#tabweeb-tree-head').append(title);

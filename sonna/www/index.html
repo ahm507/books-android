@@ -27,34 +27,37 @@
     </div>
 
     <!--Main Page Content-->
-    <div role="main"  class="ui-content jqm-content">
+    <div id="main-page-contents" role="main"  class="ui-content jqm-content">
+
         <div class="page-hits">
         </div>
 
         <div class="page-title main-app-text"></div>
 
 
-        <input type="button" onclick='doDisplay("", 0)' data-icon="home" data-iconpos="notext" value="Icon only" data-inline="true">
-        &nbsp;&nbsp;&nbsp;
-        <span id="next-prev-buttons">
-            <input type="button" onclick="doDisplayPrevious()" data-icon="arrow-r" data-iconpos="notext" value="Icon only" data-inline="true">
-            <input type="button" onclick="doDisplayNext()" data-icon="arrow-l" data-iconpos="notext" value="Icon only" data-inline="true">
-        </span>
+        <div class="custom-border-radius">
+
+            <input type="button" onclick='doDisplay("", 0)' data-icon="home" data-iconpos="notext" value="Icon only" data-inline="true">
+            &nbsp;&nbsp;&nbsp;
+
+            <span id="next-prev-buttons">
+                    <input type="button" onclick="doDisplayPrevious()" data-icon="arrow-r" data-iconpos="notext" value="Icon only" data-inline="true">
+                    <input type="button" onclick="doDisplayNext()" data-icon="arrow-l" data-iconpos="notext" value="Icon only" data-inline="true">
+            </span>
+
+        </div>
+
+
         <br><br>
+
+
 
         <div id="display-tree-head"></div>
 
         <div id="display-tree-body"></div>
 
-
-        <!--<div id="article-title" class="main-app-text"></div>-->
-
         <div id="article-body" class="page main-app-text"></div>
-        <!--<hr>-->
-        <!--<div class="page_fts main-app-text"></div>-->
 
-        <!--<div class="doc_code" style="display: none;"></div>-->
-        <!--<div class="page_id" style="display: none;"></div>-->
 
 
     </div> <!-- /content -->

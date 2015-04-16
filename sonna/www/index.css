@@ -99,3 +99,8 @@ textarea, body, input, td {
 	width: 100%
 
 }
+
+.custom-border-radius .ui-btn-icon-notext.ui-corner-all {
+			-webkit-border-radius: .3125em;
+			border-radius: .3125em;
+}
