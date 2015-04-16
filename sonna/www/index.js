@@ -7,7 +7,26 @@ if (typeof mac_browser_test === 'undefined') {
 
 function onDeviceReady() {
     console.log(">device is ready");
+    document.addEventListener("backbutton", onBackButtonClick, false);
     initialize();
+}
+
+
+function keyDownTextField(e) {
+var keyCode = e.keyCode;
+  var b_char = 66;
+  if(keyCode == b_char) { //
+    onBackButtonClick();
+  }
+}
+
+function onBackButtonClick() {
+    console.log("Back button:");
+    historyPop();
+    var back = historyPop(); //it will be added again in onDisplay()
+    if(back != 'undefined') {
+        doDisplay(back.book_code, back.page_id)
+    }
 }
 
 function initialize() {
@@ -30,7 +49,13 @@ function initialize() {
     //set dynamic styles of scrollable boxes dynamically
     setTocHeight();
 
+    //simulate the andorid device back button
+    document.addEventListener("keydown", keyDownTextField, false);
+
+
 }
+
+
 
 // SWIPE Support for touch screens
 $(document).on("pagecreate", "#demo-page", function () {
@@ -71,13 +96,9 @@ function doDisplay(book_code, page_id) {
             $('#article-body').append(parts[0]);
             if (parts.length > 1 && $.trim(parts[1]).length > 0) {
                 var footnote = parts[1];
-                //footnote.replace(/\\n/g, "\\n<br>")
                 footnote = footnote.split("\n").join("<br>")
                 $('#article-body').append("<hr>" + footnote);
             }
-
-
-
         } else {
             //home page
             $('#article-title').empty();
@@ -87,10 +108,10 @@ function doDisplay(book_code, page_id) {
             doTabweebBookList();
 
         }
-
+        var current = {book_code: book_code, page_id: page_id};
+        historyPush(current);
 //        $('.page_fts').empty();
 //        $('.page_fts').append(page.page_fts);
-
 
     });
 
@@ -114,6 +135,13 @@ function doDisplay(book_code, page_id) {
                 "\">" + kids[i].title + "</a><br>");
             }
         });
+        $("#next-prev-buttons").show();
+
+
+    } else {
+        //There is no display, just book list
+        $("#next-prev-buttons").hide();
+
 
     }
 
@@ -283,4 +311,17 @@ function setTocHeight() {
     $('.scollable-table-tabweeb').css('max-height', height + 'px');
     console.log(">Tabweeb hits height: " + height);
 }
+
+//Browser history back button support
+
+var urlsHistory = [];
+
+function historyPush(url) {
+    urlsHistory.push(url);
+}
+
+function historyPop() {
+    return urlsHistory.pop();
+}
+
 

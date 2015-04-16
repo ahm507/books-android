@@ -1,0 +1,30 @@
+7- عند استخدام مفتاح التليفون للعودة للصفحة السابقة يخرج من البرنامج
+ولا يعو للصفحة السابقة بالبرنامج
+ بمعنى أوضح عند الانتهاء من تصفح الكتاب الأول  بدء الوحى فى البخارى وأريد استكمال
+ تصفح الكتاب التالى فى البخارى أيضا وهو كتاب  ألإيمان ماذا أفعل
+ حتى فى الوضع الحالى عند استخدام خاصية التبويب نجد أنه يوضح الموطن فقط
+
+
+Flicker in display with next and previous
+
+
+3-  الأسهم فى الصفحات التالية أسهم فقط دون الدائرة
+
+
+4- الصفحة الأولى لها خلفية المسجد النبوى مثل المرفقة مثلا
+
+
+8- يمكن استخدام جزء من الصورة المرفقة كأيقونة
+
+
+9- هل يمكن إضافة خاصية الطباعة للحديث 
+
+
+12 books
+//FIXME download custom version of jquery-mobile with only used components
+//FIXME add minification as a automated step to all scripts including mine
+
+//TODO copy with large files can be slow. How can I open the file without copying.
+
+
+1- الخط على الجهاز هو خط توما
