@@ -1,5 +1,8 @@
-Publishing Books Android App 
-============================
+
+Publishing Books Android App
+=============================
+
+
 
 Technology
 ----------
@@ -26,4 +29,31 @@ Installation
 -------------
 * Read sonna/install.sh for comments on pre-requisites.
 
+* Add ios support
+
+        cordova platforms add ios
+
+* Add android support
+
+        cordova platforms add android
+
+* install basic plugins to your project
+
+        cordova plugin add org.apache.cordova.device
+
+* install console logging support
+
+        cordova plugin add org.apache.cordova.console
+
+* Handle dialogs instead of javascript dialogs that show your app is not native
+
+        cordova plugin add org.apache.cordova.dialogs
+
+* add existing sqlite
+
+        cordova plugin add com.triarc.sqliteplugin
+
+* plugin to copy the sqlite db file
+
+        cordova plugin add https://github.com/an-rahulpandey/cordova-plugin-dbcopy.git
 
