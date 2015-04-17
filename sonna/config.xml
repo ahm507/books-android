@@ -5,8 +5,16 @@
         Sonna
     </description>
     <author email="ahm507@gmail.com" href="http://ahmed-m-hammad.blogspot.com">
-        Ahmed Hammad
+        Ahmed Mahmoud Hammad
     </author>
     <content src="index.html" />
     <access origin="*" />
+
+
+    <icon src="icon.png" />
+    <platform name="android">
+        <splash src="splash-mdpi.png" density="port-mdpi"/>
+    </platform>
+
+
 </widget>

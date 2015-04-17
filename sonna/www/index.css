@@ -54,18 +54,19 @@ dd { font-size: 1.25em; margin: 1em 0 0; padding-bottom: 1em; border-bottom: 1px
 
 @font-face
 {
-    font-family: "Traditional Arabic";
-    src: url(./trado.ttf);
+    font-family: "TraditionalArabic";
+    src: url("./trado.ttf") format("opentype");
 }
 
+
 .main-app-text {
-    font-family: Traditional Arabic;
+    font-family: "TraditionalArabic";
     font-size: 23pt;
 }
 
 .footnote-app-text {
-    font-family: Traditional Arabic;
-    font-size: 14pt;
+    font-family: "TraditionalArabic";
+    font-size: 10pt;
 }
 
 
@@ -75,6 +76,8 @@ dd { font-size: 1.25em; margin: 1em 0 0; padding-bottom: 1em; border-bottom: 1px
 textarea, body, input, td {
     direction: rtl !important;
     text-align: right !important;
+
+    font-family: "TraditionalArabic";
 }
 
 /* CENTERED */
@@ -103,4 +106,9 @@ textarea, body, input, td {
 .custom-border-radius .ui-btn-icon-notext.ui-corner-all {
 			-webkit-border-radius: .3125em;
 			border-radius: .3125em;
+}
+
+a {
+    font-size: 17pt;
+
 }

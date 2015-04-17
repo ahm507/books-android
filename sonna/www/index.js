@@ -70,8 +70,6 @@ $(document).on("pagecreate", "#demo-page", function () {
 });
 
 function doDisplay(book_code, page_id) {
-     //Hide to avoid flickering while updating content
-      $('#main-page-contents').hide();
 
     //call display
     getDisplay(book_code, page_id).done(function (result) {
@@ -92,7 +90,7 @@ function doDisplay(book_code, page_id) {
             if (parts.length > 1 && $.trim(parts[1]).length > 0) {
                 var footnote = parts[1];
                 footnote = footnote.split("\n").join("<br>")
-                $('#article-body').append("<hr>" + footnote);
+                $('#article-body').append("<hr><p class='footnote-app-text'>" + footnote + "</p>");
             }
         } else {
             //home page
@@ -131,20 +129,11 @@ function doDisplay(book_code, page_id) {
         });
         $("#next-prev-buttons").show();
 
-
     } else {
         //There is no display, just book list
         $("#next-prev-buttons").hide();
 
     }
-
-    //This function helps hide the tree part flickering
-    var myVar = setInterval(function(){
-                 clearInterval(myVar);
-                   $('#main-page-contents').show();
-        }, 100);
-
-
 }
 
 function doDisplayFromSearch(book_code, page_id) {
@@ -183,7 +172,8 @@ function doSearch(pageNo) {
 
     var pageSize = 10;
     var book_code = window.localStorage.getItem("book_code");
-    if(typeof book_code === 'undefined' || book_code.length === 0) {
+    //"undefined" here must be quted and not use typeof
+    if(book_code === "undefined" || book_code.length === 0) {
         console.log("Empty book_code");
         book_code = "";
     }
@@ -249,12 +239,9 @@ function doTabweeb(title, book_code, page_id, parent_id) {
     $('#tabweeb-tree-head').empty();
     $('#display-tree-head').empty();
 
-    var level = 0;
-    showParentNodePath(book_code, page_id, parent_id);
-
     //display title
     $('#tabweeb-tree-head').append(title);
-    $('#display-tree-head').append(title);
+    $('#display-tree-head').append("<h2>" + title + "</h2>");
     $('#display-tree-head').append("<hr>");
 
     ////////////////////////////////////////////////
@@ -294,7 +281,7 @@ function showParentNodePath(book_code, page_id, parent_id) {
             }
             //Recursive call
             if (typeof parent !== 'undefined' && parent.page_id != "0") {
-                showParentNodePath(book_code, parent.page_id, parent.parent_id)
+                showParentNodePath(book_code, parent.page_id, parent.parent_id);
             }
         });
     }
