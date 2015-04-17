@@ -29,6 +29,24 @@ Installation
 -------------
 * Read sonna/install.sh for comments on pre-requisites.
 
+* install node.js manually
+    * There are multiple packages for Linux, MAC and Windows
+
+* Install Cordova
+        
+        sudo npm install -g cordova
+
+* make sure Android SDK is installed, or just install Android Studio
+
+* make sure ANT is installed, if not install it
+
+* Hint: if required, install java for ANT and Android SDK
+
+* Install ios simulator bindings
+        
+        sudo npm install -g ios-sim
+
+
 * Add ios support
 
         cordova platforms add ios
